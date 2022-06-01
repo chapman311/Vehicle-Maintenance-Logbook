@@ -39,11 +39,11 @@ A web based vehicle maintenance logbook where mechanics can track their vehicle(
     
 - MaintenanceItem
     - name of maintenance job
-    - user (foreign key to user)
-    - vehicle (foreign key to vehicle)
     - date (date completed)
     - mileage (mileage at completion)
     - notes (cost, shop name, other...)
+    - user (foreign key to user)
+    - vehicle (foreign key to vehicle)
 
 ## Schedule
 ### Week 1
