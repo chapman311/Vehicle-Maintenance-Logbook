@@ -9,7 +9,7 @@ class Vehicle(models.Model):
     year = models.IntegerField(null=True)
     make = models.CharField(max_length=100, null=True)
     model = models.CharField(max_length=100, null=True)
-    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='vehicles', null=True)
     
     def __str__(self):
         return self
@@ -23,7 +23,7 @@ class MaintenanceItem(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='maintenance_items', null=True)
     
     def __str__(self):
-        return self
+        return self.name
 
 
 

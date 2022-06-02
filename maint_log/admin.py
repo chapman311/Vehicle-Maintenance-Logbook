@@ -6,4 +6,3 @@ admin.site.register(Vehicle)
 admin.site.register(MaintenanceItem)
 
 
-
