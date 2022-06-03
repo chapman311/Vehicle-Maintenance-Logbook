@@ -5,24 +5,10 @@
 {% endblock %}
 
 {% block header %}
-        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 tracked">Please Log In</span>
+        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pb3 tracked">Please log in to continue</span>
 {% endblock %}
 
 {% block content %}
-    <!-- <form @submit.prevent="userLogin">
-        <label for="login">Username</label>
-        <input v-model="userName" type="text" id="login" autocomplete="off">
-        <br>
-        <label for="login">Password</label>
-        <input v-model="userPassword" type="password" id="login" autocomplete="off">
-        <br>
-        <input type="submit" value="Login">
-    </form>
-
-    <h3>OR</h3>
-
-    <a href="/user-signup/">Sign Up</a> -->
-
     <body>
         <main class="pa1 black-80">
             <form class="measure center" action="{% url 'maint_log:user-login' %}" method="POST">
@@ -37,9 +23,9 @@
                         <label class="db fw6 lh-copy f6" for="password">Password</label>
                         <input class="br2 pa2 input-reset ba bg-light-gray w-100" type="password" name="password"  id="password" autocomplete="off">
                     </div>
-              </fieldset>
-              <div class="">
-                  <input class="br2 b ph3 pv2 input-reset ba b--black grow pointer f6 dib" type="submit" value="Sign In">
+                </fieldset>
+                <div class="">
+                    <input class="br2 b ph3 pv2 input-reset ba b--black grow pointer f6 dib" type="submit" value="Sign In">
                 </div>
                 <div class="lh-copy mt3">
                     <a href="/user-signup/"" class="f6 link dim black db">Need an account? Click here to sign up!</a>

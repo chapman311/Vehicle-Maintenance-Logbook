@@ -5,26 +5,14 @@
 {% endblock %}
 
 {% block header %}
-        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 tracked">Please Sign Up</span>
+        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 tracked">Sign up; It's free!</span>
+        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pb3 tracked">An account is needed to use this app.</span>
 {% endblock %}
 
 {% block content %}
-    <!-- <form @submit.prevent="userLogin">
-        <label for="newUserName">Username</label>
-        <input v-model="newUserName" type="text" id="login" autocomplete="off">
-        <br>
-        <label for="newUserPassword1">Password</label>
-        <input v-model="newUserPassword1" type="password" id="login" autocomplete="off">
-        <br>
-        <label for="newUserPassword2">Re-Enter Password</label>
-        <input v-model="newUserPassword2" type="password" id="login" autocomplete="off">
-        <br>
-        <input type="submit" value="Sign Up">
-    </form> -->
-
     <body>
         <main class="pa1 black-80">
-            <form class="measure center" action="{% url 'maint_log:user-signup %}" method="POST">
+            <form class="measure center" action="{% url 'maint_log:user-signup' %}" method="POST">
                 {% csrf_token %}
                 <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
                     <legend class="f4 fw6 ph0 mh0">Sign Up</legend>
@@ -40,11 +28,14 @@
                         <label class="db fw6 lh-copy f6" for="password2">Re-Enter Password</label>
                         <input class="br2 pa2 input-reset ba bg-light-gray w-100" type="password" name="password2"  id="password2">
                     </div>
-            </fieldset>
-            <div class="">
-                <input class="br2 b ph3 pv2 input-reset ba b--black bg-light-gray grow pointer f6 dib" type="submit" value="Sign Up">
-            </div>
-            <p class="red">{{ message }}</p>
-            </form> 
+                </fieldset>
+                <div class="">
+                    <input class="br2 b ph3 pv2 input-reset ba b--black bg-light-gray grow pointer f6 dib" type="submit" value="Sign Up">
+                </div>
+                <div class="lh-copy mt3">
+                    <a href="/user-login/"" class="f6 link dim black db">Go back to user log in.</a>
+                </div>
+                <p class="red">{{ message }}</p>
+                </form> 
     </body>
 {% endblock %}

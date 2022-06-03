@@ -50,13 +50,14 @@ def userLogout(request):
     return redirect('/')
     
 def getVehicles(request):
-    vehicle_db = Vehicle.objects.all()
+    vehicle_db = Vehicle.objects.filter(user=request.user)
     vehicles = []
     for vehicle in vehicle_db:
         vehicles.append({
             'year' : vehicle.year,
             'make' : vehicle.make,
             'model' : vehicle.model,
+            'id' : vehicle.id,
         })
     return JsonResponse(data={'vehicles' : vehicles})
 
@@ -66,11 +67,11 @@ def addVehicle(request):
         year = data.get('year')
         make = data.get('make')
         model = data.get('model')
-        Vehicle.objects.create(year=year, make=make, model=model)
+        Vehicle.objects.create(year=year, make=make, model=model, user=request.user)
         return JsonResponse({'message': 'Vehicle Saved'})
 
-def getMaintenanceLogs(request):
-    maintenance_db = MaintenanceItem.objects.all()
+def getMaintenanceLogs(request, id):
+    maintenance_db = MaintenanceItem.objects.filter(vehicle_id=id)
     maintenance_items = []
     for maintenance_item in maintenance_db:
         maintenance_items.append({
@@ -88,5 +89,5 @@ def addMaintenanceLog(request):
         date = data.get('date')
         mileage = data.get('mileage')
         notes = data.get('notes')
-        MaintenanceItem.objects.create(name=name, date=date, mileage=mileage, notes=notes)
+        MaintenanceItem.objects.create(name=name, date=date, mileage=mileage, notes=notes, vehicle_id=data.get('vehicle'))
         return JsonResponse({'message': 'Maintenance log added.'})

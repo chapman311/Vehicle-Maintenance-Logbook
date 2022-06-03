@@ -6,7 +6,6 @@
 	
 {% block header %}
         <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 tracked">Logged in as {{ request.user.username }}</span>
-        <a href="" class="flex content-center justify-around link grow f6 black-80 fw6 ttu pa1 tracked">My Page</a>
         <a href="/user-logout/" class="flex content-center justify-around link grow f6 black-80 fw6 ttu pa1 tracked">Logout</a>
 {% endblock %}
 
@@ -30,13 +29,18 @@
                 <input type="submit" value="Add Vehicle">
             </form>
 
-            <ul>
-                <li v-for="vehicle in vehicles">
-                    [[ vehicle.year ]]
-                    [[ vehicle.make ]]
-                    [[ vehicle.model ]]
-                </li>
-            </ul>
+            <label for="vehicle-select">Choose a vehicle:</label>
+                <select for="vehicle-select" v-model="vehicleSelection" @change="getMaintenanceLogs">
+                    <option v-for="vehicle in vehicles" v-bind:value="vehicle">
+                        [[ vehicle.year ]]
+                        [[ vehicle.make ]]
+                        [[ vehicle.model ]]
+                    </option>
+                </select>
+
+
+            <br>
+            <br>
 
             <label for="Add Maintenance Log Entry">Add a Maintenance Logbook Entry</label>
             <form @submit.prevent="addMaintenanceLog">
@@ -75,6 +79,8 @@
                     newVehicleMake: '',
                     newVehicleModel: '',
 
+                    vehicleSelection: null,
+
 					maintenanceLogs: [],
 					newMaintenanceName: '',
 					newMaintenanceDate: '',
@@ -89,7 +95,6 @@
 
 			created () {
                 this.getVehicles()
-				this.getMaintenanceLogs()
 			},
 
 			mounted () {
@@ -127,9 +132,10 @@
 				},
 
 				getMaintenanceLogs () {
+                    console.log(this.vehicleSelection.id)
 					axios({
 						method: 'get',
-						url: '/get-maintenance-logs'
+						url: '/get-maintenance-logs/' + this.vehicleSelection.id
 					}).then(res => {
 						console.log(res.data)
 						this.maintenanceLogs = res.data.maintenance_items
@@ -145,6 +151,7 @@
 							date: this.newMaintenanceDate,
 							mileage: this.newMaintenanceMileage,
 							notes: this.newMaintenanceNotes,
+                            vehicle: this.vehicleSelection.id
 						},
 						headers: {
 							'X-CSRFToken': this.csrf_token
