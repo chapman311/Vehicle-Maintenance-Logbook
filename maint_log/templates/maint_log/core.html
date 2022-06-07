@@ -9,7 +9,9 @@
 	<script src="https://unpkg.com/vue@3"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
-	{% block title %}
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/vue-next-select/dist/index.min.css" />
+    <script src="https://unpkg.com/vue-next-select/dist/vue-next-select.iife.prod.js"></script>
+    {% block title %}
         <!-- page specific title here -->
 	{% endblock %}
 </head>
@@ -21,7 +23,7 @@
     {% endblock %}
 </header>
 
-<body class="bg-black-30 pa3 avenir">
+<body class="bg-black-30 pa3 avenir measure center">
     {% block content %}
         <!-- page specific content here -->
     {% endblock %}
@@ -30,9 +32,9 @@
 <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
     <small class="f6 db tc">© 2022 <b class="ttu">Vehicle Maintenance Logbook</b>., All Rights Reserved</small>
     <div class="tc mt3">
-      <a href="/language/" title="Language" class="f6 dib ph2 link mid-gray dim">Language</a>
-      <a href="/terms/"    title="Terms" class="f6 dib ph2 link mid-gray dim">Terms of Use</a>
-      <a href="/privacy/"  title="Privacy" class="f6 dib ph2 link mid-gray dim">Privacy</a>
+      <a href="#" title="Language" class="f6 dib ph2 link mid-gray dim">Language</a>
+      <a href="#"    title="Terms" class="f6 dib ph2 link mid-gray dim">Terms of Use</a>
+      <a href="#"  title="Privacy" class="f6 dib ph2 link mid-gray dim">Privacy</a>
     </div>
   </footer>
 
