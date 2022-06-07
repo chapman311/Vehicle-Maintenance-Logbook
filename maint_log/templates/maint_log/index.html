@@ -103,15 +103,6 @@
             <input type="submit" value="Add This Vehicle">
         </form>
 
-        <!-- <label class="b" for="vehicle-select">Choose a vehicle:</label>
-        <select for="vehicle-select" v-model="vehicleSelection" @change="getMaintenanceLogs">
-            <option v-for="vehicle in vehicles" v-bind:value="vehicle">
-                [[ vehicle.year ]]
-                [[ vehicle.make ]]
-                [[ vehicle.model ]]
-            </option>
-        </select> -->
-
         <form for="vehicle-select" class="pv2">
             <label class="b" for="vehicle-select">Choose a vehicle:</label>
             <vue-select
@@ -120,11 +111,12 @@
                 :clear-on-close="true"
                 v-model="vehicleSelection"
                 @click="getMaintenanceLogs"
-                @change="getMaintenanceLogsr"
-                :options = "vehicles">
+                @change="getMaintenanceLogs"
+                :options="vehicleLabels">
             </vue-select>
         </form>
     
+        <br>
         <br>
 
         <label class="b" for="Add Maintenance Log Entry">Add a Maintenance Logbook Entry</label>
@@ -151,6 +143,30 @@
                 [[ maintenanceLog.notes ]]
             </li>
         </ul>
+        <!-- <div class="pa4">
+            <div class="overflow-auto">
+              <table class="f6 w-100 mw8 center" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white-70">Name</th>
+                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white-70">Date</th>
+                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white-70">Mileage</th>
+                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white-70">Notes</th>
+                  </tr>
+                </thead>
+                <tbody class="lh-copy">
+                  <tr v-for="maintenanceLog in maintenanceLogs">
+                    <td>
+                        [[ maintenanceLog.name ]]
+                        [[ maintenanceLog.date ]]
+                        [[ maintenanceLog.mileage ]]
+                        [[ maintenanceLog.notes ]]
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> -->
     </div>
 
 
@@ -183,6 +199,12 @@
 
 				}
 			},
+
+            computed: {
+                vehicleLabels () {
+                    return this.vehicles.map(vehicle => vehicle.label)
+                }
+            },
 
 			delimiters: ['[[', ']]'],
 
@@ -270,6 +292,7 @@
                     }).then(res =>{
                         console.log(res.data)
                         this.vehicles = res.data.vehicles
+                        this.vehicles.forEach(vehicle => vehicle.label = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model)
                     })
                 },
 
@@ -292,10 +315,11 @@
 				},
 
 				getMaintenanceLogs () {
-                    console.log(this.vehicleSelection.id)
+                    if (!this.vehicleSelection) return
+                    const vehicle = this.vehicles.find(vehicle => vehicle.label === this.vehicleSelection)
 					axios({
 						method: 'get',
-						url: '/get-maintenance-logs/' + this.vehicleSelection.id
+						url: '/get-maintenance-logs/' + vehicle.id
 					}).then(res => {
 						console.log(res.data)
 						this.maintenanceLogs = res.data.maintenance_items
