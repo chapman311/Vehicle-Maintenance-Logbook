@@ -17,7 +17,7 @@ class Vehicle(models.Model):
     
 class MaintenanceItem(models.Model):
     name = models.CharField(max_length=100, null=True)
-    date = models.DateTimeField('date completed', null=True)
+    date = models.DateField('date completed', null=True)
     mileage = models.IntegerField(null=True)
     notes = models.CharField(max_length=300, null=True)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, null=True)
