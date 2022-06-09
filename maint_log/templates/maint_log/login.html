@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block header %}
-        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pb3 tracked">Please log in to continue</span>
 {% endblock %}
 
 {% block content %}
+    <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pv3 tracked">Please log in to continue</span>
     <body>
         <main class="pa1 black-80">
             <form class="measure center" action="{% url 'maint_log:user-login' %}" method="POST">
@@ -17,7 +17,7 @@
                     <legend class="f4 fw6 ph0 mh0">Log In</legend>
                     <div class="mt3">
                         <label class="db fw6 lh-copy f6" for="username">Username</label>
-                        <input class="br2 pa2 input-reset ba bg-light-gray w-100" type="text" name="username"  id="username" autocomplete="off">
+                        <input class="br2 pa2 input-reset ba bg-light-gray w-100" type="text" name="username"  id="username">
                     </div>
                     <div class="mv3">
                         <label class="db fw6 lh-copy f6" for="password">Password</label>

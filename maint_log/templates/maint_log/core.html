@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,14 +17,14 @@
 	{% endblock %}
 </head>
 
-<header class="tc pt4 pt5-ns avenir">
-    <span class="b f3">>>>>>>>>>>>>>This is where a super cool header will go.<<<<<<<<<<<<</span>
+<header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat: no-repeat; background-size: cover">
+    <h1 class="tc white bg-black-40">Vehicle Maintenance Logbook</h1>
     {% block header %}
         <!-- page specific header here -->
     {% endblock %}
 </header>
 
-<body class="bg-black-30 pa3 avenir center">
+<body class="bg-black-30 avenir center" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size: fill">
     {% block content %}
         <!-- page specific content here -->
     {% endblock %}

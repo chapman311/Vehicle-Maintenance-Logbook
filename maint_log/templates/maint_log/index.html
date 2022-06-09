@@ -5,244 +5,217 @@
 {% endblock %}
 	
 {% block header %}
-        <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 tracked">Logged in as {{ request.user.username }}</span>
-        <a href="/user-logout/" class="flex content-center justify-around link grow f6 black-80 fw6 ttu pa1 tracked">Logout</a>
 {% endblock %}
 
 
 {% block content %}
-    <h1 class="tc">Vehicle Maintenance Logbook</h1>
+    <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pt3 tracked">Logged in as {{ request.user.username }}</span>
+    <a href="/user-logout/" class="flex content-center justify-around link grow f6 black-80 fw6 ttu pa1 tracked">Log Out</a>
     <div id="app" class="flex flex-column items-center">
         {% csrf_token %}
         <p class="b">Search by Vehicle Identification Number (VIN):</p>
 		<form class="pb2" @submit.prevent="searchByVIN">
-			<label class="pr2" for="search-VIN">VIN:</label>
 			<input class="" v-model="userVIN" type="text" id="search-VIN">
-			<input class="f6 pointer dim ph3 pv1 mb2 dib white bg-black" type="submit" value="Search VIN">
+			<input class="f6 link dim br3 ph3 pv2 mb2 white bg-black pointer" type="submit" value="Search VIN">
 		</form>
 
-		<ul class="bg-light-red br3 pv1" v-if="output && output.ErrorText[0] !== '0'">
-            <h3 class="">The following error(s) occured:</h3>
-            <li class="pb2" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
+		<ul class="bg-light-red br3 ba b--dashed bw2 mw7" v-if="output && output.ErrorText[0] !== '0'">
+            <h3 class="pa2 pr4">The following error(s) occured:</h3>
+            <li class="pb3 bl3" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
         </ul>
-
-		<!-- <ul v-if="output" class="list lh-copy">
-            <li v-if="output.VIN">VIN: [[ output.VIN ]]</li>
-            <li v-if="output.ModelYear">Year: [[ output.ModelYear ]]</li>
-            <li v-if="output.Make">Make: [[ output.Make ]]</li>
-            <li v-if="output.Model">Model: [[ output.Model ]]</li>
-            <li v-if="output.Trim">Trim: [[ output.Trim ]]</li>
-            <li v-if="output.Doors">Doors: [[ output.Doors ]]</li>
-            <li v-if="output.BodyClass">Body Type: [[ output.BodyClass ]]</li>
-            <li v-if="output.GVWR">GVWR: [[ output.GVWR ]]</li>
-            <li v-if="output.TransmissionSpeeds">Transmission Speeds: [[ output.TransmissionSpeeds ]]</li>
-            <li v-if="output.TransmissionStyle">Transmission Type: [[ output.TransmissionStyle ]]</li>
-            <li v-if="output.FuelTypePrimary">Fuel Type: [[ output.FuelTypePrimary ]]</li>
-            <li v-if="output.EngineModel">Engine Model: [[ output.EngineModel ]]</li>
-            <li v-if="output.EngineHP">Engine HP: [[ output.EngineHP ]] hp</li>
-            <li v-if="output.DisplacementL">Displacement: [[ output.DisplacementL ]] L</li>
-            <li v-if="output.EngineConfiguration">Engine Configuration: [[ output.EngineConfiguration ]]</li>
-            <li v-if="output.EngineCylinders">Engine Cylinders: [[ output.EngineCylinders ]]</li>
-            <li v-if="output.ValveTrainDesign">Valvetrain Design: [[ output.ValveTrainDesign ]]</li>
-            <li v-if="output.PlantCity">Plant City: [[ output.PlantCity ]]</li>
-            <li v-if="output.PlantState">Plant State: [[ output.PlantState ]]</li>
-            <li v-if="output.PlantCountry">Plant Country: [[ output.PlantCountry ]]</li>
-            <form @submit.prevent="closeVIN">
-                <input type="submit" value="Close VIN Data">
-            </form>
-		</ul> -->
-        <div class="pa4" v-if="output">
+        <div class="pt2 pb4" v-if="output">
             <div class="overflow-auto">
                 <table class="f6 w-100 mw8 center" cellspacing="0">
                     <tbody>
                         <tr v-if="output.VIN">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">VIN</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.VIN ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">VIN</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.VIN ]]</td> 
                         </tr>
                         <tr v-if="output.ModelYear">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Year</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.ModelYear ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Year</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.ModelYear ]]</td> 
                         </tr>
                         <tr v-if="output.Make">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Make</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.Make ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Make</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.Make ]]</td> 
                         </tr>
                         <tr v-if="output.Model">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Model</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.Model ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Model</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.Model ]]</td> 
                         </tr>
                         <tr v-if="output.Trim">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Trim</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.Trim ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Trim</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.Trim ]]</td> 
                         </tr>
                         <tr v-if="output.Doors">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Doors</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.Doors ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Doors</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.Doors ]]</td> 
                         </tr>
                         <tr v-if="output.BodyClass">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Body Type</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.BodyClass ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Body Type</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.BodyClass ]]</td> 
                         </tr>
                         <tr v-if="output.GVWR">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">GVWR</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.GVWR ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">GVWR</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.GVWR ]]</td> 
                         </tr>
                         <tr v-if="output.TransmissionSpeeds">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Transmission Speeds</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.TransmissionSpeeds ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Transmission Speeds</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.TransmissionSpeeds ]]</td> 
                         </tr>
                         <tr v-if="output.TransmissionStyle">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Transmission Type</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.TransmissionStyle ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Transmission Type</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.TransmissionStyle ]]</td> 
                         </tr>
                         <tr v-if="output.FuelTypePrimary">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Fuel Type</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.FuelTypePrimary ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Fuel Type</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.FuelTypePrimary ]]</td> 
                         </tr>
                         <tr v-if="output.EngineModel">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Engine Model</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.EngineModel ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Engine Model</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.EngineModel ]]</td> 
                         </tr>
                         <tr v-if="output.EngineHP">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Engine HP</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.EngineHP ]] hp</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Engine HP</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.EngineHP ]] hp</td>
                         </tr> 
                         <tr v-if="output.DisplacementL">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Displacement</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.DisplacementL ]] L</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Displacement</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.DisplacementL ]] L</td>
                         </tr> 
                         <tr v-if="output.EngineConfiguration">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Engine Configuration</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.EngineConfiguration ]]</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Engine Configuration</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.EngineConfiguration ]]</td>
                         </tr> 
                         <tr v-if="output.EngineCylinders">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Engine Cylinders</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.EngineCylinders ]]</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Engine Cylinders</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.EngineCylinders ]]</td>
                         </tr> 
                         <tr v-if="output.ValveTrainDesign">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Valvetrain Design</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.ValveTrainDesign ]]</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Valvetrain Design</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.ValveTrainDesign ]]</td>
                         </tr> 
                         <tr v-if="output.PlantCity">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Plant City</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.PlantCity ]]</td>
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Plant City</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.PlantCity ]]</td>
                         </tr>
                         <tr v-if="output.PlantState">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Plant State</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.PlantState ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Plant State</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.PlantState ]]</td> 
                         </tr>
                         <tr v-if="output.PlantCountry">
-                            <td class="pv3 pr3 bb b--black-20 b pl3">Plant Country</td>
-                            <td class="pv3 pr3 bb b--black-20">[[ output.PlantCountry ]]</td> 
+                            <td class="pv2 pr3 bb b--black-20 b pl3">Plant Country</td>
+                            <td class="pv2 pr3 bb b--black-20">[[ output.PlantCountry ]]</td> 
                         </tr>
                     </tbody>
                 </table>
                 <form class="tc" @submit.prevent="closeVIN">
-                    <input type="submit" value="Close VIN Data">
+                    <input class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Close VIN Data">
                 </form>
             </div>
         </div>
-
-        <label class="b dib" for="Add Vehicle">Add a Vehicle to Your Garage</label>
+        <div>
+            <label class="b dib" for="Add Vehicle">Add a Vehicle to Your Garage</label>
+            
+            <form v-if="!userYear" class="pb2 lh-copy tl db">
+                <label class="pr2" for="search-year">Year:</label>
+                <vue-select
+                    :searchable="true"
+                    :close-on-select="true"
+                    :clear-on-close="true"
+                    v-model="userYear"
+                    :options = "[ ...Array(50).keys() ].map(x => 2023 - x)">
+                </vue-select>
+            </form>
         
-        <form v-if="!userYear" class="pb2 lh-copy tl dib">
-            <label class="pr2" for="search-year">Year:</label>
-            <vue-select
-                :searchable="true"
-                :close-on-select="true"
-                :clear-on-close="true"
-                v-model="userYear"
-                :options = "[ ...Array(50).keys() ].map(x => 2023 - x)">
-            </vue-select>
-        </form>
-    
-        <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
-        <button v-if="userYear" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('year')">Undo Year</button>
-    
-        <form v-if="userYear && !userMake" class="pv2">
-            <label class="pr2" for="search-make">Make:</label>
-            <vue-select
-                :searchable="true"
-                :close-on-select="true"
-                :clear-on-close="true"
-                v-model="userMake"
-                @click="searchByMakeAndYear"
-                @change="searchByMakeAndYear"
-                :options = "makeList.map(makeObject => makeObject.Make_Name)">
-            </vue-select>
-        </form>
-
-        <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
-        <button v-if="userMake" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('make')">Undo Make</button>
-
-        <form v-if="userMake && !userModel" class="pv2">
-            <label class="pr2" for="search-model">Model:</label>
-            <vue-select
-                :searchable="true"
-                :close-on-select="true"
-                :clear-on-close="true"
-                v-model="userModel"
-                :options = "modelList.map(modelObject => modelObject.Model_Name)">
-            </vue-select>
-        </form>
-    
-        <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
-        <button v-if="userModel" class="f6 pointer dim ph2 pv0 mb2 dib white bg-blue" v-on:click="undo('model')">Undo Model</button>
+            <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
+            <button v-if="userYear" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('year')">Undo Year</button>
         
-        <form v-if="userModel" @submit.prevent="addVehicle">
-            <input type="submit" value="Add This Vehicle">
-        </form>
+            <form v-if="userYear && !userMake" class="pv2">
+                <label class="pr2" for="search-make">Make:</label>
+                <vue-select
+                    :searchable="true"
+                    :close-on-select="true"
+                    :clear-on-close="true"
+                    v-model="userMake"
+                    @click="searchByMakeAndYear"
+                    @change="searchByMakeAndYear"
+                    :options = "makeList.map(makeObject => makeObject.Make_Name)">
+                </vue-select>
+            </form>
 
-        <form for="vehicle-select" class="pv2">
-            <label class="b" for="vehicle-select">Choose a vehicle from your garage:</label>
-            <vue-select
-                :searchable="true"
-                :close-on-select="true"
-                :clear-on-close="true"
-                v-model="vehicleSelection"
-                @click="getMaintenanceLogs"
-                @change="getMaintenanceLogs"
-                :options="vehicleLabels">
-            </vue-select>
-        </form>
-    
+            <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
+            <button v-if="userMake" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('make')">Undo Make</button>
+
+            <form v-if="userMake && !userModel" class="pv2">
+                <label class="pr2" for="search-model">Model:</label>
+                <vue-select
+                    :searchable="true"
+                    :close-on-select="true"
+                    :clear-on-close="true"
+                    v-model="userModel"
+                    :options = "modelList.map(modelObject => modelObject.Model_Name)">
+                </vue-select>
+            </form>
+        
+            <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
+            <button v-if="userModel" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('model')">Undo Model</button>
+            
+            <form v-if="userModel" @submit.prevent="addVehicle">
+                <input class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Add This Vehicle">
+            </form>
+
+            <form for="vehicle-select" class="pv2">
+                <label class="b pv3" for="vehicle-select">Choose a vehicle from your garage:</label>
+                <vue-select
+                    :searchable="true"
+                    :close-on-select="true"
+                    :clear-on-close="true"
+                    v-model="vehicleSelection"
+                    @click="getMaintenanceLogs"
+                    @change="getMaintenanceLogs"
+                    :options="vehicleLabels">
+                </vue-select>
+            </form>
+        </div>
         <br>
         <br>
         <div v-if="vehicleSelection">
             <label class="b" for="Add Maintenance Log Entry">Add a Maintenance Logbook Entry</label>
             <form @submit.prevent="addMaintenanceLog">
-                <label for="new-maintenance">Name</label>
+                <label for="new-maintenance">Name  </label>
                 <input v-model="newMaintenanceName" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Date</label>
+                <label for="new-maintenance">Date    </label>
                 <input v-model="newMaintenanceDate" type="date" id="new-maintenance" min="1940-01-01" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Mileage</label>
+                <label for="new-maintenance">Mileage  </label>
                 <input v-model="newMaintenanceMileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Notes</label>
+                <label for="new-maintenance">Notes    </label>
                 <input v-model="newMaintenanceNotes" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <input type="submit" value="Add Maintenance Log Entry">
+                <input class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer center" type="submit" value="Add Maintenance Log Entry">
+                <label for="trigger" class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer tc center">Show Modal</label>
             </form>
         </div>
 
-        <div class="pa4">
+        <div v-if="vehicleSelection" class="pa4">
             <div class="overflow-auto">
-                <table class="f6 w-100 center" cellspacing="0">
+                <table class="f6 mw7 center" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pr3 bg-white-70">Name</th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pr3 bg-white-70">Date</th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pr3 bg-white-70">Mileage</th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pr3 bg-white-70">Notes</th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Service</th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Date</th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Mileage</th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Notes</th>
                         </tr>
                     </thead>
                     <tbody class="lh-copy">
                         <tr class="stripe-dark" v-for="maintenanceLog in maintenanceLogs">
                             <td class="ph2">[[ maintenanceLog.name ]]</td>
-                            <td class="ph2">[[ maintenanceLog.date ]]</td>
-                            <td class="ph2">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
+                            <td class="ph2 tc">[[ maintenanceLog.date.toLocaleString('en-US') ]]</td>
+                            <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>    
                          </tr>
                     </tbody>
@@ -280,8 +253,16 @@
                     baseUrl: 'https://vpic.nhtsa.dot.gov/api/vehicles/',
 
                     maintIntervals: {
-                        "Oil Change" : 7500,
-                        "Tire Rotation": 5000,
+                        "Cabin Air Filter Replace": "30000 miles or every 2 years",
+                        "Engine Air Filter Replace": "30000 miles or every 2 years",
+                        "Oil Change" : "7500 miles or every year",
+                        "Tire Rotation": "5000 miles",
+                        "Spark Plugs": "100000 miles",
+                        "Transmission Fluid Replace": "30000 miles or every 2 years",
+                        "Differential Fluid Replace": "30000 miles or every 2 years",
+                        "Engine Coolant Replace": "60000 or every 5 years",
+                        "Brake Fluid Replace": "Every 3 years",
+                        "Timing Belt Replace": "100000 miles",
                     }
 
 				}
