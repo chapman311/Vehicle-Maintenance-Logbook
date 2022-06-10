@@ -214,7 +214,7 @@
                     <tbody class="lh-copy">
                         <tr class="stripe-dark" v-for="maintenanceLog in maintenanceLogs">
                             <td class="ph2">[[ maintenanceLog.name ]]</td>
-                            <td class="ph2 tc">[[ maintenanceLog.date.toLocaleString('en-US') ]]</td>
+                            <td class="ph2 tc">[[ maintenanceLog.date().toLocaleString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>    
                          </tr>
