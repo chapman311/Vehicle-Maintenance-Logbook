@@ -120,6 +120,7 @@
             <form v-if="!userYear" class="pb2 lh-copy tl db">
                 <label class="pr2" for="search-year">Year:</label>
                 <vue-select
+                    color="red"
                     :searchable="true"
                     :close-on-select="true"
                     :clear-on-close="true"
@@ -214,7 +215,7 @@
                     <tbody class="lh-copy">
                         <tr class="stripe-dark" v-for="maintenanceLog in maintenanceLogs">
                             <td class="ph2">[[ maintenanceLog.name ]]</td>
-                            <td class="ph2 tc">[[ maintenanceLog.date().toLocaleString() ]]</td>
+                            <td class="ph2 tc">[[ new Date(maintenanceLog.date).toLocaleDateString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>    
                          </tr>
