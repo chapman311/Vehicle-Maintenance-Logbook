@@ -79,6 +79,7 @@ def getMaintenanceLogs(request, id):
             'date' : maintenance_item.date,
             'mileage' : maintenance_item.mileage,
             'notes' : maintenance_item.notes,
+            'id' : maintenance_item.id
         })
     return JsonResponse(data={'maintenance_items': maintenance_items})
 
@@ -91,3 +92,8 @@ def addMaintenanceLog(request):
         notes = data.get('notes')
         MaintenanceItem.objects.create(name=name, date=date, mileage=mileage, notes=notes, vehicle_id=data.get('vehicle'))
         return JsonResponse({'message': 'Maintenance log added.'})
+    
+def deleteMaintenanceLog(request, id):
+    if request.method == 'POST':
+        MaintenanceItem.objects.filter(id=id).delete()
+        return JsonResponse({'message': 'Maintenance log deleted.'})
