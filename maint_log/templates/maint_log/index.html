@@ -9,17 +9,17 @@
 
 
 {% block content %}
-    <span class="flex content-center justify-around f6 black-80 fw6 ttu pa1 pt3 tracked">Logged in as {{ request.user.username }}</span>
-    <a href="/user-logout/" class="flex content-center justify-around link grow f6 black-80 fw6 ttu pa1 tracked">Log Out</a>
+    <span class="flex justify-around tc f6 black-80 fw6 ttu pa1 pt3 tracked">Logged in as {{ request.user.username }}</span>
+    <a href="/user-logout/" class="flex justify-around tc link grow f6 black-80 fw6 ttu pa1 tracked">Log Out</a>
     <div id="app" class="flex flex-column items-center">
         {% csrf_token %}
-        <p class="b">Search by Vehicle Identification Number (VIN):</p>
+        <p class="f4-ns b">Search by Vehicle Identification Number (VIN):</p>
 		<form class="pb2" @submit.prevent="searchByVIN">
-			<input class="" v-model="userVIN" type="text" id="search-VIN">
-			<input class="f6 link dim br3 ph3 pv1 mb2 white bg-black pointer" type="submit" value="Search VIN">
+			<input class="bw1" v-model="userVIN" type="text" id="search-VIN">
+			<input class="f6 link dim  ph3 pv1 mb2 white bw0 bg-black-70 pointer" type="submit" value="Search VIN">
 		</form>
 
-		<ul class="br3 ba b--dashed bw2 mw7" style="background-color: rgba(255, 0, 0, 0.25);" v-if="output && output.ErrorText[0] !== '0'">
+		<ul class="br2 ba b--dashed bw2 mw7" style="background-color: rgba(255, 0, 0, 0.25);" v-if="output && output.ErrorText[0] !== '0'">
             <h3 class="pa2 pr4">The following error(s) occured:</h3>
             <li class="pb3 bl3" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
         </ul>
@@ -110,12 +110,12 @@
                     </tbody>
                 </table>
                 <form class="tc" @submit.prevent="closeVIN">
-                    <input class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Close VIN Data">
+                    <input class="f6 link dim br2 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Close VIN Data">
                 </form>
             </div>
         </div>
         <div>
-            <label class="b dib" for="Add Vehicle">Add a Vehicle to Your Garage</label>
+            <label class="f4-ns b dib pt2 pt3-ns" for="Add Vehicle">Add a Vehicle to Your Garage</label>
             
             <form v-if="!userYear" class="pb2 lh-copy tl db">
                 <label class="pr2" for="search-year">Year:</label>
@@ -160,46 +160,37 @@
                 </vue-select>
             </form>
 
-        
             <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
             <button v-if="userModel" class="f6 pointer dim ph2 pv0 mb2 white bg-blue" v-on:click="undo('model')">Undo Model</button>
             
             <form v-if="userModel" @submit.prevent="addVehicle">
-                <input class="f6 link dim br3 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Add This Vehicle">
+                <input class="f6 link dim br2 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Add This Vehicle">
             </form>
 
-            <form for="vehicle-select" class="pv2">
-                <label class="b pv3" for="vehicle-select">Choose a vehicle from your garage:</label>
-                <vue-select
-                    :searchable="true"
-                    :close-on-select="true"
-                    :clear-on-close="true"
-                    v-model="vehicleSelection"
-                    @click="getMaintenanceLogs"
-                    @change="getMaintenanceLogs"
-                    :options="vehicleLabels">
-                </vue-select>
-            </form>
         </div>
 
         <br>
-
+        <label class="f4-ns b pt3" for="vehicle-select">Your Garage</label>
         <main class="flex flex-wrap justify-center mw7">
             <figure
-                v-for="vehicle in vehicleLabels"
-                style="background-color: rgba(0, 140, 255, 0.25);"
-                v-model="vehicleSelection"
-                @click="getMaintenanceLogs"
-                class="pa3 br2 bw2 ba flex flex-column justify-center items-center link dim pointer"
-            >[[vehicle]]
+                v-for="v in vehicles"
+                :style="
+                    v === vehicle
+                        ? 'background-color: rgba(208, 217, 113, 0.25);'
+                        : 'background-color: rgba(0, 140, 255, 0.25);'
+                "
+                @click="getMaintenanceLogs(v)"
+                class="pa3 br2 bw2 ba flex flex-column link pointer"
+            >[[ v.label ]]
+                <button class="light-red f7 link dim br3 ph2 pv1 mv2 db white bg-black pointer tc center" @click="checkDeleteVehicle(v)">Delete</button>
             </figure>
         </main>
 
         <br>
 
-        <div v-if="vehicleSelection">
-            <label class="b" for="Add Maintenance Log Entry">Add a Maintenance Logbook Entry</label>
-            <form @submit.prevent="addMaintenanceLog">
+        <div v-if="vehicle">
+            <label class="f4-ns b" for="Add Maintenance Log Entry">Add a Maintenance Logbook Entry</label>
+            <form @submit.prevent="addMaintenanceLog()">
                 <label for="new-maintenance">Name  </label>
                 <input v-model="newMaintenanceName" type="text" id="new-maintenance" autocomplete="off">
                 <br>
@@ -218,9 +209,9 @@
         </div>
 
 
-        <div v-if="vehicleSelection" class="pa4">
+        <div v-if="maintenanceLogs.length" class="pa4">
             <div class="overflow-auto">
-                <table class="f6 mw7 center" cellspacing="0">
+                <table class="f6 mw4 mw7-ns center" cellspacing="0">
                     <thead>
                         <tr>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Service</th>
@@ -236,7 +227,7 @@
                             <td class="ph2 tc">[[ new Date(maintenanceLog.date).toLocaleDateString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>
-                            <td class="ph2"><button class="light-red link dim br3 ph2 pv1 mv2 db white bg-black pointer tc center" @click="checkDelete(maintenanceLog.id)">Delete</button></td>    
+                            <td class="ph2"><button class="light-red link dim br3 ph2 pv1 mv2 db white bg-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)">Delete</button></td>    
                          </tr>
                     </tbody>
                 </table>
@@ -250,9 +241,10 @@
 		const App = {
 			data () {
 				return {
-                    vehicles: [],
+                    showingMaintenanceLogs: false,
 
-                    vehicleSelection: null,
+                    vehicles: [],
+                    vehicle: null,
 
 					maintenanceLogs: [],
 					newMaintenanceName: '',
@@ -287,12 +279,6 @@
 
 				}
 			},
-
-            computed: {
-                vehicleLabels () {
-                    return this.vehicles.map(vehicle => vehicle.label)
-                },
-            },
 
 			delimiters: ['[[', ']]'],
 
@@ -402,20 +388,57 @@
 					this.userModel = ''
 				},
 
-				getMaintenanceLogs () {
-                    if (!this.vehicleSelection) return
-                    const vehicle = this.vehicles.find(vehicle => vehicle.label === this.vehicleSelection)
+                checkDeleteVehicle(vehicle) {
+                    Swal.fire ({
+                        title: 'Are you sure you want to delete this vehicle from your garage?',
+                        showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: 'Keep Vehicle',
+                        denyButtonText: 'Delete Vehicle',
+                        customClass: {
+                            actions: 'my-actions',
+                            confirmButton: 'order-1',
+                            denyButton: 'order-2',
+                        }
+                        }).then((res) => {
+                            console.log(res)
+                            if (res.isConfirmed) {
+                                Swal.fire('No change made.', '', 'success')
+                            } else if (res.isDenied) {
+                                Swal.fire('Vehicle deleted.', '', 'info')
+                                this.deleteVehicle(vehicle.id)
+                            }
+                    })
+                },
+
+                deleteVehicle (id) {
+                    axios({
+                        method: 'post',
+                        url:'/delete-vehicle/' + id,
+                        headers: {
+                            'X-CSRFToken': this.csrf_token
+                        }
+                    }).then(res => {
+                        this.getVehicles()
+                    }).then(res => this.getVehicles())
+                    this.vehicle = ''
+
+                },
+
+				getMaintenanceLogs (vehicle) {
+                    this.vehicle = vehicle
+                    
 					axios({
 						method: 'get',
-						url: '/get-maintenance-logs/' + vehicle.id
+						url: '/get-maintenance-logs/' + this.vehicle.id
 					}).then(res => {
 						console.log(res.data)
 						this.maintenanceLogs = res.data.maintenance_items.sort((a, b) => b.mileage - a.mileage)
+                        this.showingMaintenanceLogs = true
 					})
 				},
 
 				addMaintenanceLog () {
-                    const vehicle = this.vehicles.find(vehicle => vehicle.label === this.vehicleSelection)
 					axios({
 						method: 'post',
 						url: '/add-maintenance-log/',
@@ -424,21 +447,21 @@
 							date: this.newMaintenanceDate,
 							mileage: this.newMaintenanceMileage,
 							notes: this.newMaintenanceNotes,
-                            vehicle: vehicle.id
+                            vehicle: this.vehicle.id
 						},
 						headers: {
 							'X-CSRFToken': this.csrf_token
 						}
-					}).then(res => this.getMaintenanceLogs())
+					}).then(res => this.getMaintenanceLogs(this.vehicle))
                     this.newMaintenanceName = ''
 					this.newMaintenanceDate = ''
 					this.newMaintenanceMileage = ''
 					this.newMaintenanceNotes = ''
 				},
 
-                checkDelete (id) {
+                checkDeleteLog (id) {
                     Swal.fire ({
-                        title: 'Are you sure you want to delete this maintenance log?',
+                        title: 'Are you sure you want to delete this maintenance log from the record?',
                         showDenyButton: true,
                         showCancelButton: false,
                         confirmButtonText: 'Keep Log',
@@ -467,7 +490,7 @@
                             'X-CSRFToken': this.csrf_token
                         }
                     }).then(res => {
-                        this.getMaintenanceLogs()
+                        this.getMaintenanceLogs(this.vehicle)
                     })
 
                 }

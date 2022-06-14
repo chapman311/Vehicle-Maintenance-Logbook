@@ -70,6 +70,11 @@ def addVehicle(request):
         Vehicle.objects.create(year=year, make=make, model=model, user=request.user)
         return JsonResponse({'message': 'Vehicle Saved'})
 
+def deleteVehicle(request,id):
+    if request.method == 'POST':
+        Vehicle.objects.filter(id=id).delete()
+        return JsonResponse({'message': 'Vehicle Deleted'})
+
 def getMaintenanceLogs(request, id):
     maintenance_db = MaintenanceItem.objects.filter(vehicle_id=id)
     maintenance_items = []

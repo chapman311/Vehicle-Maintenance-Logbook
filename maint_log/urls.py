@@ -9,6 +9,7 @@ urlpatterns = [
     
     path('get-vehicles/', views.getVehicles),
     path('add-vehicle/', views.addVehicle),
+    path('delete-vehicle/<int:id>', views.deleteVehicle),
     path('get-maintenance-logs/<int:id>/', views.getMaintenanceLogs),
     path('add-maintenance-log/', views.addMaintenanceLog), 
     path('delete-maintenance-log/<int:id>', views.deleteMaintenanceLog), 
