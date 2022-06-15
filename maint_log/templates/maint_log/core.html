@@ -6,20 +6,18 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="favicon.png">
-    <script src="https://kit.fontawesome.com/604ffa8460.js" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/vue@3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.17/sweetalert2.min.js" integrity="sha512-Kyb4n9EVHqUml4QZsvtNk6NDNGO3+Ta1757DSJqpxe7uJlHX1dgpQ6Sk77OGoYA4zl7QXcOK1AlWf8P61lSLfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.17/sweetalert2.css" integrity="sha512-p06JAs/zQhPp/dk821RoSDTtxZ71yaznVju7IHe85CPn9gKpQVzvOXwTkfqCyWRdwo+e6DOkEKOWPmn8VE9Ekg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.11/wordpress-admin/wordpress-admin.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/vue-next-select/dist/index.min.css" />
     <script src="https://unpkg.com/vue-next-select/dist/vue-next-select.iife.prod.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.11/wordpress-admin/wordpress-admin.min.css">
-
     {% block title %}
         <!-- page specific title here -->
 	{% endblock %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'maint_log/images/car_logo.ico' %}"/>
 </head>
 
 <header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat: no-repeat; background-size: cover">
@@ -29,7 +27,7 @@
     {% endblock %}
 </header>
 
-<body class="bg-black-30 avenir center" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size: fill">
+<body class="bg-black-30 center avenir" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size: fill">
     {% block content %}
         <!-- page specific content here -->
     {% endblock %}
@@ -37,11 +35,8 @@
 
 <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
     <small class="f6 db tc">© 2022 <b class="ttu">Vehicle Maintenance Logbook</b>., All Rights Reserved</small>
-    <div class="tc mt3">
-      <a href="#" title="Language" class="f6 dib ph2 link mid-gray dim">Language</a>
-      <a href="#" title="Terms" class="f6 dib ph2 link mid-gray dim">Terms of Use</a>
-      <a href="#" title="Privacy" class="f6 dib ph2 link mid-gray dim">Privacy</a>
-    </div>
+    <a href="https://vpic.nhtsa.dot.gov/" target="_blank" class="flex justify-around tc link f7 mid-gray fw6 tracked mt2"><img src="{% static 'maint_log/images/nhtsa_logo.png' %}" alt="NHTSA Logo" width="175" class="center flex justify-around"></a>
+    <a href="https://vpic.nhtsa.dot.gov/" target="_blank" class="flex justify-around tc link f7 mid-gray fw6 tracked mt2">Powered by NHTSA Product Information Catalog and Vehicle Listing (vPIC)</a>
   </footer>
 
 </html>
