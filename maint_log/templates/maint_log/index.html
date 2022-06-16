@@ -9,20 +9,22 @@
 
 
 {% block content %}
-    <span class="flex justify-around tc f6 black-80 fw6 ttu pa1 pt3 tracked">Logged&nbsp;&nbsp;in&nbsp;&nbsp;as&nbsp;&nbsp;{{ request.user.username }}</span>
-    <a href="/user-logout/" class="flex justify-around tc link grow f6 black-80 fw6 ttu pa1 tracked">Log&nbsp;&nbsp;Out</a>
+    <span class="flex justify-around tc f6 near-black fw6 ttu pa1 pt3 tracked">Logged&nbsp;&nbsp;in&nbsp;&nbsp;as&nbsp;&nbsp;{{ request.user.username }}</span>
+    <div class="dib flex justify-around">
+        <a href="/user-logout/" class="tc link grow f6 near-black fw6 ttu pa1 tracked">Log&nbsp;&nbsp;Out</a>
+    </div>
     <div id="app" class="flex flex-column items-center">
         {% csrf_token %}
         <div class="flex flex-column items-center"  v-if="!showingMaintenanceLogs">
             <label class="f5-ns b dib pt3 pb2 ttu ph2">Vehicle Identification Number (VIN) Decoder:</label>
             <form @submit.prevent="searchByVIN">
-                <input class="bw1" v-model="userVIN" type="text" id="search-VIN">
-                <input class="f6 link ph3 pv1 mb2 white bw0 bg-black-70 pointer" type="submit" value="Search VIN">
+                <input class="br1 pa2 input-reset ba bg-light-gray w-auto" v-model="userVIN" type="text" maxlength="17" id="search-VIN">
+                <input class="b f6 link ph3 pv2 mb2 white bw1 br1 bg-near-black pointer" type="submit" value="Search VIN">
             </form>
 
-            <ul class="br2 ba b--dashed bw2 mw7" style="background-color: rgba(255, 0, 0, 0.25);" v-if="output && output.ErrorText[0] !== '0'">
+            <ul class="mh4 br2 ba b--dashed b--near-black bw2 mw7" style="background-color: rgba(255, 65, 54, 0.75);" v-if="output && output.ErrorText[0] !== '0'">
                 <h3 class="pa2 pr4">The following error(s) occured:</h3>
-                <li class="pb3 bl3 p5" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
+                <li class="mw6 mh3 pb3 bl3 p5" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
             </ul>
             <div class="pt2 pb4" v-if="output">
                 <div class="overflow-auto">
@@ -111,17 +113,16 @@
                         </tbody>
                     </table>
                     <form class="tc" @submit.prevent="closeVIN">
-                        <input class="f6 link br2 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Close VIN Data">
+                        <input class="b f6 link br2 ph3 pv2 mb2 db white bg-near-black pointer tc center" type="submit" value="Close VIN Data">
                     </form>
                 </div>
             </div>
             <div>
-                <label class="f5-ns b dib pt2 pt3-ns ttu" for="Add Vehicle">Add a Vehicle to Your Garage</label>
+                <label class="f5-ns b dib pv2 pt3-ns ttu" for="Add Vehicle">Add a Vehicle to Your Garage</label>
                 
                 <form v-if="!userYear" class="pb2 lh-copy tl db">
                     <label class="pr2" for="search-year">Year:</label>
                     <vue-select
-                        color="red"
                         :searchable="true"
                         :close-on-select="true"
                         :clear-on-close="true"
@@ -129,9 +130,22 @@
                         :options = "[ ...Array(50).keys() ].map(x => 2023 - x)">
                     </vue-select>
                 </form>
+
+                <form v-if="!userYear" class="pb2 lh-copy tl db">
+                    <label class="pr2" for="search-year">Year:</label>
+                        <model-list-select 
+                            :list="[ ...Array(50).keys() ].map(x => 2023 - x)"
+                            v-model="userYear"
+                            option-value="code"
+                            option-text="name"
+                            id="mySelectYear"
+                            name="mySelectName"
+                            placeholder="select item">
+                        </model-list-select>
+                </form>
             
                 <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
-                <button v-if="userYear" class="f6 pointer ph2 pv0 mb2 white bg-blue" v-on:click="undo('year')">Undo Year</button>
+                <button v-if="userYear" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i class="fa-solid fa-delete-left"></i></button>
                 
                 <form v-if="userYear && !userMake" class="pv2">
                     <label class="pr2" for="search-make">Make:</label>
@@ -147,12 +161,11 @@
                 </form>
         
                 <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
-                <button v-if="userMake" class="f6 pointer ph2 pv0 mb2 white bg-blue" v-on:click="undo('make')">Undo Make</button>
+                <button v-if="userMake" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i class="fa-solid fa-delete-left"></i></button>
 
                 <form v-if="userMake && !userModel" class="pv2">
                     <label class="pr2" for="search-model">Model:</label>
                     <vue-select
-                        item-color="red"
                         :searchable="true"
                         :close-on-select="true"
                         :clear-on-close="true"
@@ -162,56 +175,62 @@
                 </form>
     
                 <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
-                <button v-if="userModel" class="f6 pointer ph2 pv0 mb2 white bg-blue" v-on:click="undo('model')">Undo Model</button>
+                <button v-if="userModel" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i class="fa-solid fa-delete-left"></i></button>
     
                 <form v-if="userModel" @submit.prevent="addVehicle">
-                    <input class="f6 link br2 ph3 pv2 mb2 db white bg-black pointer tc center" type="submit" value="Add This Vehicle">
+                    <input class="green b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" type="submit" value="Add This Vehicle">
                 </form>
             </div>
         </div>
 
         <br>
 
-        <button for="show-page-top" class="f6 link br2 ph3 pv2 mb2 db white bg-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
-        <label class="f4-ns b pt3" for="vehicle-select">Your Garage</label>
+        <button for="show-page-top" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
+        <label class="f3-ns b dib pt3 ttu" for="vehicle-select">Garage</label>
         <main class="flex flex-wrap justify-center mw7">
             <figure
-            v-for="v in vehicles"
-            :style="
+                v-for="v in vehicles"
+                :style="
                     v === vehicle
-                        ? 'background-color: rgba(208, 217, 113, 0.25);'
-                        : 'background-color: rgba(0, 140, 255, 0.25);'
-                "
-                @click="getMaintenanceLogs(v)"
-                class="pa3 br1 bw2 ba flex flex-column link pointer b f6 f5-ns"
-            >[[ v.label ]]
-                <button class="light-red f7 link br2 ph2 pv1 mv2 db white bg-black pointer tc center" @click="checkDeleteVehicle(v)">Delete</button>
+                        ? 'background-color: rgba(191, 186, 23, 0.75);'
+                        : 'background-color: rgba(0, 131, 196, 0.75);'
+                    "
+                    @click="getMaintenanceLogs(v)"
+                    class="flex flex-column pt3 ph3 br1 bw2 ba link pointer b f6 f5-ns"
+            >
+                <div class="center pb3">
+                    <i class="fa-solid fa-car fa-2xl"></i>
+                </div>
+                [[ v.label ]]
+                <div>
+                    <button class="center red f7 link br2 ph2 mv2 db white bg-near-black pointer" @click="checkDeleteVehicle(v)"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
             </figure>
         </main>
 
         <br>
 
         <div v-if="vehicle && showingAddMaintenanceLog">
-            <label class="f4-ns b" for="Add Maintenance Log">Add a Maintenance Log</label>
-            <form @submit.prevent="addMaintenanceLog()">
-                <label for="new-maintenance">Name  </label>
-                <input v-model="newMaintenanceName" type="text" id="new-maintenance" autocomplete="off">
+            <label class="i" for="Add Maintenance Log">Enter maintenance log information below:</label>
+            <form class="pt1" @submit.prevent="addMaintenanceLog()">
+                <label for="new-maintenance" class="b">Service  </label>
+                <input v-model="newMaintenanceName" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Date    </label>
-                <input v-model="newMaintenanceDate" type="date" id="new-maintenance" min="1940-01-01" autocomplete="off">
+                <label for="new-maintenance" class="b">Date    </label>
+                <input v-model="newMaintenanceDate" class="pointer br1 pa2 input-reset ba bg-light-gray w-auto" type="date" id="new-maintenance" min="1940-01-01" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Mileage  </label>
-                <input v-model="newMaintenanceMileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off">
+                <label for="new-maintenance" class="b">Mileage  </label>
+                <input v-model="newMaintenanceMileage" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off">
                 <br>
-                <label for="new-maintenance">Notes    </label>
-                <input v-model="newMaintenanceNotes" type="text" id="new-maintenance" autocomplete="off">
+                <label for="new-maintenance" class="b">Notes    </label>
+                <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <input  class="green f6 link br2 ph3 pv2 mv2 db white bg-black pointer center" type="submit" value="Add Maintenance Log">
+                <input  class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
             </form>
         </div>
 
-        <button  v-if="vehicle && !showingAddMaintenanceLog" for="show-add-maintenance" class="green f6 link br2 ph3 pv2 mv2 db white bg-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
-        <button for="recommended-maintenance" class="f6 link br2 ph3 pv2 mb2 db white bg-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
+        <button  v-if="vehicle && !showingAddMaintenanceLog" for="show-add-maintenance" class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
+        <button v-if="vehicle && !showingAddMaintenanceLog" for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
         
         <div v-if="maintenanceLogs.length && vehicle" class="pa4">
             <div class="overflow-auto">
@@ -231,7 +250,7 @@
                             <td class="ph2 tc">[[ new Date(maintenanceLog.date).toLocaleDateString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>
-                            <td class="ph2"><button class="light-red link br2 ph2 pv1 mv2 db white bg-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)">Delete</button></td>    
+                            <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i class="fa-solid fa-trash-can"></i></button></td>    
                          </tr>
                     </tbody>
                 </table>
@@ -281,6 +300,7 @@
                         "Engine Coolant Replace": "60000 or every 5 years",
                         "Brake Fluid Replace": "Every 3 years",
                         "Timing Belt Replace": "100000 miles",
+                        "Battery Replace": "Every 5 years",
                     }
 
 				}
@@ -289,6 +309,7 @@
 			delimiters: ['[[', ']]'],
 
 			created () {
+                this.parseMaintIntervals()
                 this.getAllMakes()
                 this.getVehicles()
 			},
@@ -387,19 +408,25 @@
                     this.showingAddMaintenanceLog = true
                 },
 
+                parseMaintIntervals () {
+                    let output = ''
+                    for (prop in this.maintIntervals) {
+                        output += '<p>'
+                        output += prop + ': '
+                        output += this.maintIntervals[prop]
+                        output += '</p>'
+                    }
+                    return output
+                        
+                },
+
                 seeRecommendations () {
-                    Swal.fire(
-                        "Cabin Air Filter Replace: 30000 miles or every 2 year",
-                        "Engine Air Filter Replace: 30000 miles or every 2 years",
-                        "Oil Change : 7500 miles or every year",
-                        "Tire Rotation: 5000 miles",
-                        "Spark Plugs: 100000 miles",
-                        "Transmission Fluid Replace: 30000 miles or every 2 years",
-                        "Differential Fluid Replace: 30000 miles or every 2 years",
-                        "Engine Coolant Replace: 60000 or every 5 years",
-                        "Brake Fluid Replace: Every 3 years",
-                        "Timing Belt Replace: 100000 miles",
-                    )
+                    Swal.fire({
+                        title: "Reccomended Maintenence Intervals",
+                        html: this.parseMaintIntervals(),
+                        icon: 'info',
+                        footer: "<p>Consult your vehicle's manual for maintenane intervals. These are just suggestions.</p>"
+                    })
                 },
 
                 getVehicles () {
@@ -437,8 +464,10 @@
                         title: 'Are you sure you want to delete this vehicle from your garage?',
                         showDenyButton: true,
                         showCancelButton: false,
-                        confirmButtonText: 'Keep',
-                        denyButtonText: 'Delete',
+                        confirmButtonText: 'Delete',
+                        confirmButtonColor: '#ff4136',
+                        denyButtonText: 'Keep',
+                        denyButtonColor: '#0083c4',
                         customClass: {
                             actions: 'my-actions',
                             confirmButton: 'order-1',
@@ -447,10 +476,10 @@
                         }).then((res) => {
                             console.log(res)
                             if (res.isConfirmed) {
-                                Swal.fire('No change made.', '', 'success')
-                            } else if (res.isDenied) {
-                                Swal.fire('Vehicle deleted.', '', 'info')
+                                Swal.fire('Vehicle deleted.', '', 'success')
                                 this.deleteVehicle(vehicle.id)
+                            } else if (res.isDenied) {
+                                Swal.fire('No change made.', '', 'info')
                             }
                     })
                 },
@@ -509,8 +538,10 @@
                         title: 'Are you sure you want to delete this maintenance log from the record?',
                         showDenyButton: true,
                         showCancelButton: false,
-                        confirmButtonText: 'Keep',
-                        denyButtonText: 'Delete',
+                        confirmButtonText: 'Delete',
+                        confirmButtonColor: '#ff4136',
+                        denyButtonText: 'Keep',
+                        denyButtonColor: '#0083c4',
                         customClass: {
                             actions: 'my-actions',
                             confirmButton: 'order-1',
@@ -519,10 +550,10 @@
                     }).then((res) => {
                         console.log(res)
                         if (res.isConfirmed) {
-                            Swal.fire('No change made.', '', 'success')
-                        } else if (res.isDenied) {
-                            Swal.fire('Log deleted.', '', 'info')
+                            Swal.fire('Log deleted.', '', 'success')
                             this.deleteMaintLog(id)
+                        } else if (res.isDenied) {
+                            Swal.fire('No change made.', '', 'info')
                         }
                     })
                 },

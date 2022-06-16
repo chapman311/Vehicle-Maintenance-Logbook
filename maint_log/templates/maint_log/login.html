@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block content %}
-    <span class="flex justify-around f6 black-80 fw6 ttu pa1 pv3 tracked">Please log in to continue</span>
+    <span class="flex justify-around tc f6 near-black fw6 ttu pa1 pt3 tracked">Please log in to continue</span>
+    <div class="dib flex justify-around">
+        <a href="/user-signup/" class="tc link grow f6 near-black fw6 ttu pa1 tracked">Sign Up</a>
+    </div>
     <body>
         <main class="pa1 black-80">
             <form class="measure center" action="{% url 'maint_log:user-login' %}" method="POST">
@@ -27,8 +30,8 @@
                 <div class="">
                     <input class="br2 b ph3 pv2 input-reset ba b--black grow pointer f6 dib" type="submit" value="Sign In">
                 </div>
-                <div class="lh-copy mt3">
-                    <a href="/user-signup/"" class="f6 link dim black db">Need an account? Click here to sign up!</a>
+                <div class="dib lh-copy mt3">
+                    <a href="/user-signup/" class="f6 link dim black">Need an account? Click here to sign up!</a>
                 </div>
                 <p class="red">{{ message }}</p>
             </form>
