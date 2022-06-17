@@ -36,6 +36,14 @@ def userSignUp(request):
             message += 'Passwords do not match.  '
         if User.objects.filter(username=username).exists():
             message += 'Username already taken.  '
+        if not len(password1) >= 8:
+            message += 'Password is too short.  '
+        if password1.isnumeric():
+            message += 'Password is only numbers.  '
+        if password1.isalpha():
+            message += 'Password is only letters.  '
+        if " " in password1:
+            message += 'Password contains a space.  '
         if message:
             message += 'Please try again.'
         else:

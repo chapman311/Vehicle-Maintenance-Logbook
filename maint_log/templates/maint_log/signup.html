@@ -25,10 +25,10 @@
                         <input class="br2 pa2 input-reset ba bg-light-gray w-100" type="password" name="password1"  id="password1" autocomplete="off">
                     </div>
                     <ul>
-                        <li>Your password can't be too similar to your other personal information.</li>
                         <li>Your password must contain at least 8 characters.</li>
-                        <li>Your password can't be a commonly used password.</li>
-                        <li>Your password can't be entirely numeric.</li>
+                        <li>Your password can't contain a space.</li>
+                        <li>Your password can't be entirely numbers.</li>
+                        <li>Your password can't be entirely letters.</li>
                     </ul>
                     <div class="mv3">
                         <label class="db fw6 lh-copy f6" for="password2">Re-Enter Password</label>
@@ -41,7 +41,7 @@
                 <div class="dib lh-copy mt3">
                     <a href="/user-login/"" class="f6 link dim black">Go back to user log in.</a>
                 </div>
-                <p class="red">{{ message }}</p>
+                <p class="b dark-red">{{ message }}</p>
                 </form> 
     </body>
 {% endblock %}

@@ -120,7 +120,7 @@
             <div>
                 <label class="f5-ns b dib pv2 pt3-ns ttu" for="Add Vehicle">Add a Vehicle to Your Garage</label>
                 
-                <form v-if="!userYear" class="pb2 lh-copy tl db">
+                <!-- <form v-if="!userYear" class="pb2 lh-copy tl db">
                     <label class="pr2" for="search-year">Year:</label>
                     <vue-select
                         :searchable="true"
@@ -129,7 +129,7 @@
                         v-model="userYear"
                         :options = "[ ...Array(50).keys() ].map(x => 2023 - x)">
                     </vue-select>
-                </form>
+                </form> -->
 
                 <form v-if="!userYear" class="pb2 lh-copy tl db">
                     <label class="pr2" for="search-year">Year:</label>
@@ -145,9 +145,9 @@
                 </form>
             
                 <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
-                <button v-if="userYear" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userYear" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i class="fa-solid fa-delete-left"></i></button>
                 
-                <form v-if="userYear && !userMake" class="pv2">
+                <!-- <form v-if="userYear && !userMake" class="pv2">
                     <label class="pr2" for="search-make">Make:</label>
                     <vue-select
                         :searchable="true"
@@ -158,12 +158,12 @@
                         @change="searchByMakeAndYear"
                         :options = "makeList.map(makeObject => makeObject.Make_Name)">
                     </vue-select>
-                </form>
+                </form> -->
         
                 <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
-                <button v-if="userMake" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userMake" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i class="fa-solid fa-delete-left"></i></button>
 
-                <form v-if="userMake && !userModel" class="pv2">
+                <!-- <form v-if="userMake && !userModel" class="pv2">
                     <label class="pr2" for="search-model">Model:</label>
                     <vue-select
                         :searchable="true"
@@ -172,10 +172,10 @@
                         v-model="userModel"
                         :options = "modelList.map(modelObject => modelObject.Model_Name)">
                     </vue-select>
-                </form>
+                </form> -->
     
                 <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
-                <button v-if="userModel" class="f6 br2 pointer ph2 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userModel" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i class="fa-solid fa-delete-left"></i></button>
     
                 <form v-if="userModel" @submit.prevent="addVehicle">
                     <input class="green b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" type="submit" value="Add This Vehicle">
@@ -186,6 +186,7 @@
         <br>
 
         <button for="show-page-top" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
+        
         <label class="f3-ns b dib pt3 ttu" for="vehicle-select">Garage</label>
         <main class="flex flex-wrap justify-center mw7">
             <figure
@@ -203,7 +204,7 @@
                 </div>
                 [[ v.label ]]
                 <div>
-                    <button class="center red f7 link br2 ph2 mv2 db white bg-near-black pointer" @click="checkDeleteVehicle(v)"><i class="fa-solid fa-trash-can"></i></button>
+                    <button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteVehicle(v)"><i class="fa-solid fa-trash-can fa-sm"></i></button>
                 </div>
             </figure>
         </main>
@@ -226,12 +227,15 @@
                 <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
                 <input  class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
+                <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="hideMaintenanceLog">Cancel</button>
             </form>
         </div>
 
-        <button  v-if="vehicle && !showingAddMaintenanceLog" for="show-add-maintenance" class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
-        <button v-if="vehicle && !showingAddMaintenanceLog" for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
-        
+        <div v-if="vehicle && !showingAddMaintenanceLog">
+            <button for="show-add-maintenance" class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
+            <button for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
+        </div>
+
         <div v-if="maintenanceLogs.length && vehicle" class="pa4">
             <div class="overflow-auto">
                 <table class="f6 mw4 mw7-ns center" cellspacing="0">
@@ -264,7 +268,7 @@
 	<script>
 		const App = {
 			data () {
-				return {
+                return {
                     showingMaintenanceLogs: false,
                     showingAddMaintenanceLog: false,
 
@@ -302,9 +306,10 @@
                         "Timing Belt Replace": "100000 miles",
                         "Battery Replace": "Every 5 years",
                     }
-
-				}
+             }
 			},
+
+           // el: '#app',
 
 			delimiters: ['[[', ']]'],
 
@@ -331,7 +336,6 @@
                             format: 'json',
                         },
                     }).then(response => {
-                        console.log(response)
                         this.userVIN = ''
                         this.output = response.data.Results[0]
                         this.userYear = this.output.ModelYear
@@ -358,7 +362,6 @@
                             format: 'json',
                         },
                     }).then(response => {
-                        console.log(response)
                         this.makeList = response.data.Results
                     })
                 },
@@ -375,7 +378,6 @@
                             format: 'json',
                         },
                     }).then(response => {
-                        console.log(response)
                         this.modelList = response.data.Results
                     })
                 },
@@ -408,10 +410,14 @@
                     this.showingAddMaintenanceLog = true
                 },
 
+                hideMaintenanceLog () {
+                    this.showingAddMaintenanceLog = false
+                },
+
                 parseMaintIntervals () {
                     let output = ''
                     for (prop in this.maintIntervals) {
-                        output += '<p>'
+                        output += '<p class="f6">'
                         output += prop + ': '
                         output += this.maintIntervals[prop]
                         output += '</p>'
@@ -422,10 +428,10 @@
 
                 seeRecommendations () {
                     Swal.fire({
-                        title: "Reccomended Maintenence Intervals",
+                        title: 'Recommended Maintenance Intervals',
                         html: this.parseMaintIntervals(),
                         icon: 'info',
-                        footer: "<p>Consult your vehicle's manual for maintenane intervals. These are just suggestions.</p>"
+                        footer: "<p class='f6 yellow'>Consult your vehicle's manual for maintenance intervals. These are just suggestions.</p>"
                     })
                 },
 
@@ -434,8 +440,16 @@
                         method: 'get',
                         url: '/get-vehicles'
                     }).then(res =>{
-                        console.log(res.data)
-                        this.vehicles = res.data.vehicles
+                        this.vehicles = res.data.vehicles.sort((a, b) => {
+                            const bAfterA = b.model > a.model
+                            if (bAfterA) return -1
+                            return 1
+                        }).sort((a, b) => {
+                            const bAfterA = b.make > a.make
+                            if (bAfterA) return -1
+                            return 1
+                        }).sort((a, b) => b.year - a.year)
+                        console.log(this.vehicles)
                         this.vehicles.forEach(vehicle => vehicle.label = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model)
                     })
                 },
@@ -468,13 +482,7 @@
                         confirmButtonColor: '#ff4136',
                         denyButtonText: 'Keep',
                         denyButtonColor: '#0083c4',
-                        customClass: {
-                            actions: 'my-actions',
-                            confirmButton: 'order-1',
-                            denyButton: 'order-2',
-                        }
                         }).then((res) => {
-                            console.log(res)
                             if (res.isConfirmed) {
                                 Swal.fire('Vehicle deleted.', '', 'success')
                                 this.deleteVehicle(vehicle.id)
@@ -503,7 +511,6 @@
 						method: 'get',
 						url: '/get-maintenance-logs/' + this.vehicle.id
 					}).then(res => {
-						console.log(res.data)
 						this.maintenanceLogs = res.data.maintenance_items.sort((a, b) => b.mileage - a.mileage)
                         this.showingMaintenanceLogs = true
 					})
@@ -542,13 +549,7 @@
                         confirmButtonColor: '#ff4136',
                         denyButtonText: 'Keep',
                         denyButtonColor: '#0083c4',
-                        customClass: {
-                            actions: 'my-actions',
-                            confirmButton: 'order-1',
-                            denyButton: 'order-2',
-                        }
                     }).then((res) => {
-                        console.log(res)
                         if (res.isConfirmed) {
                             Swal.fire('Log deleted.', '', 'success')
                             this.deleteMaintLog(id)
@@ -572,6 +573,8 @@
                 }
 			}
 		}
+        // Vue.component ('model-list-select', VueSearchSelect.ModelListSelect)
+        // new Vue(App)
 		const app = Vue.createApp(App)
         app.component('vue-select', VueNextSelect)
 		app.mount('#app')
