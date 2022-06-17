@@ -120,34 +120,22 @@
             <div>
                 <label class="f5-ns b dib pv2 pt3-ns ttu" for="Add Vehicle">Add a Vehicle to Your Garage</label>
                 
-                <!-- <form v-if="!userYear" class="pb2 lh-copy tl db">
+                <form v-if="!userYear" class="pb2 lh-copy tl db">
                     <label class="pr2" for="search-year">Year:</label>
                     <vue-select
+                        placeholder="Select"
                         :searchable="true"
                         :close-on-select="true"
                         :clear-on-close="true"
                         v-model="userYear"
                         :options = "[ ...Array(50).keys() ].map(x => 2023 - x)">
                     </vue-select>
-                </form> -->
-
-                <form v-if="!userYear" class="pb2 lh-copy tl db">
-                    <label class="pr2" for="search-year">Year:</label>
-                        <model-list-select 
-                            :list="[ ...Array(50).keys() ].map(x => 2023 - x)"
-                            v-model="userYear"
-                            option-value="code"
-                            option-text="name"
-                            id="mySelectYear"
-                            name="mySelectName"
-                            placeholder="select item">
-                        </model-list-select>
                 </form>
             
                 <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
                 <button v-if="userYear" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i class="fa-solid fa-delete-left"></i></button>
                 
-                <!-- <form v-if="userYear && !userMake" class="pv2">
+                <form v-if="userYear && !userMake" class="pv2">
                     <label class="pr2" for="search-make">Make:</label>
                     <vue-select
                         :searchable="true"
@@ -158,12 +146,12 @@
                         @change="searchByMakeAndYear"
                         :options = "makeList.map(makeObject => makeObject.Make_Name)">
                     </vue-select>
-                </form> -->
+                </form>
         
                 <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
                 <button v-if="userMake" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i class="fa-solid fa-delete-left"></i></button>
 
-                <!-- <form v-if="userMake && !userModel" class="pv2">
+                <form v-if="userMake && !userModel" class="pv2">
                     <label class="pr2" for="search-model">Model:</label>
                     <vue-select
                         :searchable="true"
@@ -172,7 +160,7 @@
                         v-model="userModel"
                         :options = "modelList.map(modelObject => modelObject.Model_Name)">
                     </vue-select>
-                </form> -->
+                </form>
     
                 <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
                 <button v-if="userModel" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i class="fa-solid fa-delete-left"></i></button>
@@ -306,10 +294,8 @@
                         "Timing Belt Replace": "100000 miles",
                         "Battery Replace": "Every 5 years",
                     }
-             }
+                }
 			},
-
-           // el: '#app',
 
 			delimiters: ['[[', ']]'],
 
@@ -449,7 +435,6 @@
                             if (bAfterA) return -1
                             return 1
                         }).sort((a, b) => b.year - a.year)
-                        console.log(this.vehicles)
                         this.vehicles.forEach(vehicle => vehicle.label = vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model)
                     })
                 },
@@ -573,8 +558,6 @@
                 }
 			}
 		}
-        // Vue.component ('model-list-select', VueSearchSelect.ModelListSelect)
-        // new Vue(App)
 		const app = Vue.createApp(App)
         app.component('vue-select', VueNextSelect)
 		app.mount('#app')
