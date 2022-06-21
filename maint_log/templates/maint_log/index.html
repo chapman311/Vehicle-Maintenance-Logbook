@@ -214,13 +214,13 @@
                 <label for="new-maintenance" class="b">Notes    </label>
                 <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <input  class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
+                <input  class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
                 <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="hideMaintenanceLog">Cancel</button>
             </form>
         </div>
 
         <div v-if="vehicle && !showingAddMaintenanceLog">
-            <button for="show-add-maintenance" class="b green f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
+            <button for="show-add-maintenance" class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
             <button for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
         </div>
 
@@ -233,7 +233,8 @@
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Date</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Mileage</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Notes</th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b"></th>
+                            <!-- <th class="fw6 pt3 tc bb b--black-20 tl ph2 pv2 bg-white-70 f5 b"></th> -->
+                            <th class="fw6 pt3 tc bb b--black-20 tl ph4 pv2 bg-white-70 f5 b"></th>
                         </tr>
                     </thead>
                     <tbody class="lh-copy">
@@ -242,6 +243,7 @@
                             <td class="ph2 tc">[[ new Date(maintenanceLog.date).toLocaleDateString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>
+                            <!-- <td class="ph2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editLog(maintenanceLog.id)"><i class="fa-solid fa-pen-to-square"></i></button></td>     -->
                             <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i class="fa-solid fa-trash-can"></i></button></td>    
                          </tr>
                     </tbody>
@@ -282,17 +284,17 @@
                     baseUrl: 'https://vpic.nhtsa.dot.gov/api/vehicles/',
 
                     maintIntervals: {
-                        "Cabin Air Filter Replace": "30000 miles or every 2 years",
-                        "Engine Air Filter Replace": "30000 miles or every 2 years",
-                        "Oil Change" : "7500 miles or every year",
-                        "Tire Rotation": "5000 miles",
-                        "Spark Plugs": "100000 miles",
-                        "Transmission Fluid Replace": "30000 miles or every 2 years",
-                        "Differential Fluid Replace": "30000 miles or every 2 years",
-                        "Engine Coolant Replace": "60000 or every 5 years",
+                        "Tire Rotation": "5,000 miles",
+                        "Oil Change" : "7,500 miles or every year",
+                        "Cabin Air Filter Replace": "30,000 miles or every 2 years",
+                        "Engine Air Filter Replace": "30,000 miles or every 2 years",
+                        "Transmission Fluid Replace": "30,000 miles or every 2 years",
+                        "Differential Fluid Replace": "30,000 miles or every 2 years",
                         "Brake Fluid Replace": "Every 3 years",
-                        "Timing Belt Replace": "100000 miles",
                         "Battery Replace": "Every 5 years",
+                        "Engine Coolant Replace": "60,000 or every 5 years",
+                        "Spark Plugs": "100,000 miles",
+                        "Timing Belt Replace": "100,000 miles",
                     }
                 }
 			},
@@ -347,9 +349,9 @@
                         params: { 
                             format: 'json',
                         },
-                    }).then(response => {
-                        this.makeList = response.data.Results
-                    })
+                    }).then(res => {
+                        this.makeList = res.data.Results
+                        })
                 },
 
                 searchByMakeAndYear () {
@@ -364,7 +366,7 @@
                             format: 'json',
                         },
                     }).then(response => {
-                        this.modelList = response.data.Results
+                        this.modelList = response.data.Results.sort((a, b) => a.Model_Name.localeCompare(b.Model_Name))
                     })
                 },
 
@@ -456,7 +458,27 @@
 					this.userMake = ''
 					this.userModel = ''
                     this.vehicle = ''
+                    this.togglePageTop()
+                    this.confirmVehicleAdded()
 				},
+
+                async confirmVehicleAdded() {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: 'white',
+                        customClass: {
+                            popup: 'colored-toast'
+                        },
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    })
+                    await Toast.fire({
+                        icon: 'success',
+                        title: 'Vehicle Added'
+                    })
+                },
 
                 checkDeleteVehicle(vehicle) {
                     Swal.fire ({
