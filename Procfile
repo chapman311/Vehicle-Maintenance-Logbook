@@ -1,2 +1,2 @@
-web: gunicorn vehicle_maintenance_logbook.wsgi
+web: gunicorn config.wsgi
 release: python manage.py migrate
