@@ -129,8 +129,8 @@ LOGIN_URL = 'user-login/'
 
 
 
-import django-on-heroku
-django-on-heroku.settings(locals())
+import django_on_heroku
+django_on_heroku.settings(locals())
 
 
 
