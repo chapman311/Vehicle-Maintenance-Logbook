@@ -240,7 +240,7 @@
                     <tbody class="lh-copy">
                         <tr class="stripe-dark" v-for="maintenanceLog in maintenanceLogs">
                             <td class="ph2">[[ maintenanceLog.name ]]</td>
-                            <td class="ph2 tc">[[ new Date(maintenanceLog.date).toLocaleDateString() ]]</td>
+                            <td class="ph2 tc">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
                             <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                             <td class="ph2">[[ maintenanceLog.notes ]]</td>
                             <!-- <td class="ph2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editLog(maintenanceLog.id)"><i class="fa-solid fa-pen-to-square"></i></button></td>     -->
