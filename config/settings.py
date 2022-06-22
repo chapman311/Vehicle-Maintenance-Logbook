@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -129,9 +129,9 @@ LOGIN_URL = 'user-login/'
 
 
 
-
-import django_on_heroku
-django_on_heroku.settings(locals())
+if DEBUG:
+    import django_on_heroku
+    django_on_heroku.settings(locals())
 
 
 
