@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
+def boolify(value):
+    if value in [True, 'True']:
+        return True
+    if value in [False, 'False']:
+        return False
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = boolify(config('DEBUG'))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
@@ -129,7 +135,7 @@ LOGIN_URL = 'user-login/'
 
 
 
-if DEBUG:
+if DEBUG == False:
     import django_on_heroku
     django_on_heroku.settings(locals())
 
