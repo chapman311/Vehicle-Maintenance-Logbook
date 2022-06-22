@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 
@@ -56,7 +56,7 @@ def userSignUp(request):
 def userLogout(request):
     logout(request)
     return redirect('/')
-    
+
 def getVehicles(request):
     vehicle_db = Vehicle.objects.filter(user=request.user)
     vehicles = []
@@ -105,7 +105,18 @@ def addMaintenanceLog(request):
         notes = data.get('notes')
         MaintenanceItem.objects.create(name=name, date=date, mileage=mileage, notes=notes, vehicle_id=data.get('vehicle'))
         return JsonResponse({'message': 'Maintenance log added.'})
-    
+
+def editMaintenanceLog(request, id):
+    if request.method == 'POST':
+        maintenance_log = MaintenanceItem.objects.get(id=id)
+        data = json.loads(request.body)
+        maintenance_log.name = data.get('name')
+        maintenance_log.date = data.get('date')
+        maintenance_log.mileage = data.get('mileage')
+        maintenance_log.notes = data.get('notes')
+        maintenance_log.save()
+        return JsonResponse({'message': 'Maintenance log updated.'})
+
 def deleteMaintenanceLog(request, id):
     if request.method == 'POST':
         MaintenanceItem.objects.filter(id=id).delete()

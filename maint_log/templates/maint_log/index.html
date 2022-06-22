@@ -133,7 +133,7 @@
                 </form>
             
                 <span v-if="userYear" class="db">Year: [[ userYear ]]</span>
-                <button v-if="userYear" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userYear" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('year')"><i title="Undo Year" class="fa-solid fa-delete-left"></i></button>
                 
                 <form v-if="userYear && !userMake" class="pv2">
                     <label class="pr2" for="search-make">Make:</label>
@@ -149,7 +149,7 @@
                 </form>
         
                 <span v-if="userMake" class="db">Make: [[ userMake ]]</span>
-                <button v-if="userMake" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userMake" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('make')"><i title="Undo Make" class="fa-solid fa-delete-left"></i></button>
 
                 <form v-if="userMake && !userModel" class="pv2">
                     <label class="pr2" for="search-model">Model:</label>
@@ -163,7 +163,7 @@
                 </form>
     
                 <span  v-if="userModel" class="db">Model: [[ userModel ]]</span>
-                <button v-if="userModel" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i class="fa-solid fa-delete-left"></i></button>
+                <button v-if="userModel" class="f6 br2 pointer ph1 pv0 mb2 red bg-near-black" v-on:click="undo('model')"><i title="Undo Model" class="fa-solid fa-delete-left"></i></button>
     
                 <form v-if="userModel" @submit.prevent="addVehicle">
                     <input class="green b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" type="submit" value="Add This Vehicle">
@@ -202,16 +202,16 @@
         <div v-if="vehicle && showingAddMaintenanceLog">
             <label class="i" for="Add Maintenance Log">Enter maintenance log information below:</label>
             <form class="pt1" @submit.prevent="addMaintenanceLog()">
-                <label for="new-maintenance" class="b">Service  </label>
+                <label for="new-maintenance" class="b">Service </label>
                 <input v-model="newMaintenanceName" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
-                <label for="new-maintenance" class="b">Date    </label>
+                <label for="new-maintenance" class="b">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input v-model="newMaintenanceDate" class="pointer br1 pa2 input-reset ba bg-light-gray w-auto" type="date" id="new-maintenance" min="1940-01-01" autocomplete="off">
                 <br>
-                <label for="new-maintenance" class="b">Mileage  </label>
+                <label for="new-maintenance" class="b">Mileage </label>
                 <input v-model="newMaintenanceMileage" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off">
                 <br>
-                <label for="new-maintenance" class="b">Notes    </label>
+                <label for="new-maintenance" class="b">Notes&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
                 <input  class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
@@ -233,19 +233,29 @@
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Date</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Mileage</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Notes</th>
-                            <!-- <th class="fw6 pt3 tc bb b--black-20 tl ph2 pv2 bg-white-70 f5 b"></th> -->
+                            <th class="fw6 pt3 tc bb b--black-20 tl ph2 pv2 bg-white-70 f5 b"></th>
                             <th class="fw6 pt3 tc bb b--black-20 tl ph4 pv2 bg-white-70 f5 b"></th>
                         </tr>
                     </thead>
                     <tbody class="lh-copy">
-                        <tr class="stripe-dark" v-for="maintenanceLog in maintenanceLogs">
-                            <td class="ph2">[[ maintenanceLog.name ]]</td>
-                            <td class="ph2 tc">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
-                            <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
-                            <td class="ph2">[[ maintenanceLog.notes ]]</td>
-                            <!-- <td class="ph2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editLog(maintenanceLog.id)"><i class="fa-solid fa-pen-to-square"></i></button></td>     -->
-                            <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i class="fa-solid fa-trash-can"></i></button></td>    
-                         </tr>
+                        <template v-for="maintenanceLog in maintenanceLogs">
+                            <tr v-if="maintenanceLog.editing === false" class="stripe-dark">
+                                <td class="ph2 w-auto">[[ maintenanceLog.name ]]</td>
+                                <td class="ph2 tc w-auto w-auto">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
+                                <td class="ph2 tc w-auto">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
+                                <td class="ph2 w-auto">[[ maintenanceLog.notes ]]</td>
+                                <td class="ph2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
+                                <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i title="Delete" class="fa-solid fa-trash-can"></i></button></td>    
+                            </tr>
+                            <tr v-else class="stripe-dark">
+                                <td class="ph2 w-auto"><input v-model="maintenanceLog.name" type="text" autocomplete="off"></td>
+                                <td class="ph2 tc w-auto"><input v-model="maintenanceLog.date" type="date" autocomplete="off"></td>
+                                <td class="ph2 tc w-auto"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
+                                <td class="ph2 w-auto"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
+                                <td class="ph2"><button class="green link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
+                                <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -520,8 +530,28 @@
 					}).then(res => {
 						this.maintenanceLogs = res.data.maintenance_items.sort((a, b) => b.mileage - a.mileage)
                         this.showingMaintenanceLogs = true
+                        this.maintenanceLogs.forEach(log => log.editing=false)
 					})
 				},
+
+                editMaintenanceLog (maintenanceLog) {
+                    console.log(this.maintenanceDate)
+                    axios({
+                        method: 'post',
+                        url: '/edit-maintenance-log/' + maintenanceLog.id,
+                        data: {							
+                            name: maintenanceLog.name,
+							date: maintenanceLog.date,
+							mileage: maintenanceLog.mileage,
+							notes: maintenanceLog.notes,
+                        },
+                        headers: {
+							'X-CSRFToken': this.csrf_token
+						}
+                    }).then(res => {
+                        this.getMaintenanceLogs(this.vehicle)
+                    })
+                },
 
 				addMaintenanceLog () {
 					axios({
