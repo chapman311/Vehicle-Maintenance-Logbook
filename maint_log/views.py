@@ -66,6 +66,7 @@ def getVehicles(request):
             'make' : vehicle.make,
             'model' : vehicle.model,
             'id' : vehicle.id,
+            'maintenance_intervals' : vehicle.maintenance_intervals
         })
     return JsonResponse(data={'vehicles' : vehicles})
 

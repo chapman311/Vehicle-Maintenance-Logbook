@@ -13,7 +13,7 @@
     <div class="dib flex justify-around">
         <a href="/user-logout/" class="tc link grow f6 near-black fw6 ttu pa1 tracked">Log&nbsp;&nbsp;Out</a>
     </div>
-    <div id="app" class="flex flex-column items-center">
+    <div id="app" class="flex-ns flex-column items-center">
         {% csrf_token %}
         <div class="flex flex-column items-center"  v-if="!showingMaintenanceLogs">
             <label class="f5-ns b dib pt3 pb2 ttu ph2">Vehicle Identification Number (VIN) Decoder:</label>
@@ -175,7 +175,7 @@
 
         <button for="show-page-top" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
         
-        <label class="f3-ns b dib pt3 ttu" for="vehicle-select">Garage</label>
+        <h2 class="f3-ns b pt3 ttu tc" for="vehicle-select">Garage</h2>
         <main class="flex flex-wrap justify-center mw7">
             <figure
                 v-for="v in vehicles"
@@ -215,45 +215,45 @@
                 <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
                 <input  class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
-                <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showingAddMaintenanceLog=false">Cancel</button>
             </form>
+            <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showingAddMaintenanceLog=false">Cancel</button>
         </div>
 
         <div v-if="vehicle && !showingAddMaintenanceLog">
             <button for="show-add-maintenance" class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="getMaintenanceLogs(this.vehicle); showingAddMaintenanceLog=true">Add Maintenance Log</button>
-            <button for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
+            <button for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations(this.vehicle)">See Recommended Maintenance Intervals</button>
         </div>
 
-        <div v-if="maintenanceLogs.length && vehicle" class="pa4">
+        <div v-if="maintenanceLogs.length && vehicle" class="pa2">
             <div class="overflow-auto">
                 <table class="f6 mw4 mw7-ns center" cellspacing="0">
-                    <thead>
+                    <thead class="lh-copy measure">
                         <tr>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Service</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Date</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Mileage</th>
                             <th class="fw6 pt3 tc bb b--black-20 tl pb3 pl3 pr3 bg-white-70 f5 b">Notes</th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl ph2 pv2 bg-white-70 f5 b"></th>
-                            <th class="fw6 pt3 tc bb b--black-20 tl ph4 pv2 bg-white-70 f5 b"></th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pv2 bg-white-70 f5 b"></th>
+                            <th class="fw6 pt3 tc bb b--black-20 tl pv2 bg-white-70 f5 b"></th>
                         </tr>
                     </thead>
-                    <tbody class="lh-copy">
+                    <tbody class="lh-copy measure">
                         <template v-for="maintenanceLog in maintenanceLogs">
                             <tr v-if="maintenanceLog.editing === false" class="stripe-dark">
-                                <td class="ph2 w-auto">[[ maintenanceLog.name ]]</td>
-                                <td class="ph2 tc w-auto w-auto">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
-                                <td class="ph2 tc w-auto">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
-                                <td class="ph2 w-auto">[[ maintenanceLog.notes ]]</td>
+                                <td class="ph2">[[ maintenanceLog.name ]]</td>
+                                <td class="ph2 tc">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
+                                <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
+                                <td class="ph2">[[ maintenanceLog.notes ]]</td>
                                 <td class="ph2"><button v-if="!editingIsHappening" class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true; editingIsHappening=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
                                 <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i title="Delete" class="fa-solid fa-trash-can"></i></button></td>    
                             </tr>
                             <tr v-else class="stripe-dark">
-                                <td class="ph2 w-auto"><input v-model="maintenanceLog.name" type="text" autocomplete="off"></td>
-                                <td class="ph2 tc w-auto"><input v-model="maintenanceLog.date" type="date" autocomplete="off"></td>
-                                <td class="ph2 tc w-auto"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
-                                <td class="ph2 w-auto"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
-                                <td class="ph2"><button class="green link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
-                                <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
+                                <td class="ph2"><input v-model="maintenanceLog.name" type="text" autocomplete="off"></td>
+                                <td class="ph2 tc"><input v-model="maintenanceLog.date" type="date" autocomplete="off"></td>
+                                <td class="ph2 tc"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
+                                <td class="ph2"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
+                                <td class="ph2"><button class="green link br2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
+                                <td class="ph2"><button class="red link br2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
                             </tr>
                         </template>
                     </tbody>
@@ -269,6 +269,7 @@
 		const App = {
 			data () {
                 return {
+                    showingAddMaintenanceLog: false,
                     showingMaintenanceLogs: false,
                     editingIsHappening: false,
                     vehicles: [],
@@ -287,26 +288,12 @@
                     output: '',
                     userVIN: '',
                     baseUrl: 'https://vpic.nhtsa.dot.gov/api/vehicles/',
-                    maintIntervals: {
-                        "Tire Rotation": "5,000 miles",
-                        "Oil Change" : "7,500 miles or every year",
-                        "Cabin Air Filter Replace": "30,000 miles or every 2 years",
-                        "Engine Air Filter Replace": "30,000 miles or every 2 years",
-                        "Transmission Fluid Replace": "30,000 miles or every 2 years",
-                        "Differential Fluid Replace": "30,000 miles or every 2 years",
-                        "Brake Fluid Replace": "Every 3 years",
-                        "Battery Replace": "Every 5 years",
-                        "Engine Coolant Replace": "60,000 or every 5 years",
-                        "Spark Plugs": "100,000 miles",
-                        "Timing Belt Replace": "100,000 miles",
-                    }
                 }
 			},
 
 			delimiters: ['[[', ']]'],
 
 			created () {
-                this.parseMaintIntervals()
                 this.getAllMakes()
                 this.getVehicles()
 			},
@@ -398,24 +385,12 @@
                     
                 },
 
-                parseMaintIntervals () {
-                    let output = ''
-                    for (prop in this.maintIntervals) {
-                        output += '<p class="f6">'
-                        output += prop + ': '
-                        output += this.maintIntervals[prop]
-                        output += '</p>'
-                    }
-                    return output
-                        
-                },
-
-                seeRecommendations () {
+                seeRecommendations (vehicle) {
                     Swal.fire({
                         title: 'Recommended Maintenance Intervals',
-                        html: this.parseMaintIntervals(),
+                        html: '<pre class="f6">'+vehicle.maintenance_intervals+'</pre>',
                         icon: 'info',
-                        footer: "<p class='f6 yellow'>Consult your vehicle's manual for maintenance intervals. These are just suggestions.</p>"
+                        footer: "<p class='f6 yellow'>Consult your vehicle's manual for maintenance intervals. These are just suggestions.</p>",
                     })
                 },
 
