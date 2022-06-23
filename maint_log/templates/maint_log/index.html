@@ -192,7 +192,7 @@
                 </div>
                 [[ v.label ]]
                 <div>
-                    <button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteVehicle(v)"><i class="fa-solid fa-trash-can fa-sm"></i></button>
+                    <button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteVehicle(v)"><i title="Delete" class="fa-solid fa-trash-can fa-sm"></i></button>
                 </div>
             </figure>
         </main>
@@ -215,12 +215,12 @@
                 <input v-model="newMaintenanceNotes" class="br1 pa2 input-reset ba bg-light-gray w-auto" type="text" id="new-maintenance" autocomplete="off">
                 <br>
                 <input  class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" type="submit" value="Add Maintenance Log">
-                <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="hideMaintenanceLog">Cancel</button>
+                <button for="cancel-add-maintenance" class="b red f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showingAddMaintenanceLog=false">Cancel</button>
             </form>
         </div>
 
         <div v-if="vehicle && !showingAddMaintenanceLog">
-            <button for="show-add-maintenance" class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="showAddMaintenanceLog">Add Maintenance Log</button>
+            <button for="show-add-maintenance" class="b f6 link br1 ph3 pv2 mv2 db white bg-near-black pointer center" @click="getMaintenanceLogs(this.vehicle); showingAddMaintenanceLog=true">Add Maintenance Log</button>
             <button for="recommended-maintenance" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="seeRecommendations">See Recommended Maintenance Intervals</button>
         </div>
 
@@ -244,7 +244,7 @@
                                 <td class="ph2 tc w-auto w-auto">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
                                 <td class="ph2 tc w-auto">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
                                 <td class="ph2 w-auto">[[ maintenanceLog.notes ]]</td>
-                                <td class="ph2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
+                                <td class="ph2"><button v-if="!editingIsHappening" class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true; editingIsHappening=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
                                 <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i title="Delete" class="fa-solid fa-trash-can"></i></button></td>    
                             </tr>
                             <tr v-else class="stripe-dark">
@@ -270,29 +270,23 @@
 			data () {
                 return {
                     showingMaintenanceLogs: false,
-                    showingAddMaintenanceLog: false,
-
+                    editingIsHappening: false,
                     vehicles: [],
                     vehicle: '',
-
 					maintenanceLogs: [],
 					newMaintenanceName: '',
 					newMaintenanceDate: '',
 					newMaintenanceMileage: '',
 					newMaintenanceNotes: '',
-
 					csrf_token: '',
-
                     userYear: '',
                     userMake: '',
                     userModel: '',
                     makeList: [],
                     modelList: [],
-
                     output: '',
                     userVIN: '',
                     baseUrl: 'https://vpic.nhtsa.dot.gov/api/vehicles/',
-
                     maintIntervals: {
                         "Tire Rotation": "5,000 miles",
                         "Oil Change" : "7,500 miles or every year",
@@ -402,14 +396,6 @@
                         this.showingMaintenanceLogs = true
                     }
                     
-                },
-
-                showAddMaintenanceLog () {
-                    this.showingAddMaintenanceLog = true
-                },
-
-                hideMaintenanceLog () {
-                    this.showingAddMaintenanceLog = false
                 },
 
                 parseMaintIntervals () {
@@ -531,6 +517,7 @@
 						this.maintenanceLogs = res.data.maintenance_items.sort((a, b) => b.mileage - a.mileage)
                         this.showingMaintenanceLogs = true
                         this.maintenanceLogs.forEach(log => log.editing=false)
+                        this.editingIsHappening = false
 					})
 				},
 
