@@ -24,7 +24,9 @@
 <body class="flex flex-column" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size:fill; background-attachment:fixed; min-height:100vh">
     
     <header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat: no-repeat; background-size: cover">
-        <h1 class="tc blue bg-black-50" style="color:rgb(133, 214, 255)">Vehicle Maintenance Logbook</h1>
+        <div class="dib">
+            <h1 class="tc blue bg-black-60 pa2 br1" style="color:rgb(133, 214, 255)">Vehicle Maintenance Logbook</h1>
+        </div>
         {% block header %}
         <!-- page specific header here -->
         {% endblock %}

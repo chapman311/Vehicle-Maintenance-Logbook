@@ -179,21 +179,21 @@
         <button for="show-page-top" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
         
         <h2 class="f3-ns b pt3 ttu tc" for="vehicle-select">Garage</h2>
-        <main class="flex flex-wrap justify-center mw7">
+        <main class="flex flex-wrap justify-center mw7 near-black">
             <figure
                 v-for="v in vehicles"
                 :style="
                     v === vehicle
-                        ? 'background-color: rgba(191, 186, 23, 0.75);'
-                        : 'background-color: rgba(0, 131, 196, 0.75);'
+                        ? 'background-color: rgb(194, 128, 43);'
+                        : 'background-color: rgb(0, 131, 196);'
                     "
                     @click="getMaintenanceLogs(v)"
-                    class="flex flex-column pt3 ph3 br1 bw2 ba link pointer b f6 f5-ns"
+                    class="flex flex-column pt3 ph3 br1 bw2 link pointer ba bw1 b f6 f5-ns"
             >
                 <div class="center pb3">
                     <i class="fa-solid fa-car fa-2xl"></i>
                 </div>
-                [[ v.label ]]
+                    [[ v.label ]]
                 <div>
                     <button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteVehicle(v)"><i title="Delete" class="fa-solid fa-trash-can fa-sm"></i></button>
                 </div>
@@ -256,7 +256,7 @@
                                 <td class="ph2 h2 tc"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
                                 <td class="ph2 h2"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
                                 <td class="pr1 h2"><button class="green link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
-                                <td class="pr2 h2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
+                                <td class="pr2 h2"><button class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-rotate-left"></i></button></td>    
                             </tr>
                         </template>
                     </tbody>
