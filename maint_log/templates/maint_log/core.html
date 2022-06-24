@@ -21,7 +21,7 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'maint_log/images/car_logo.ico' %}"/>
 </head>
 
-<body class="flex flex-column" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat:no-repeat; background-size:fill; background-attachment:fixed; min-height:100vh">
+<body class="flex-ns flex-column" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat:no-repeat; background-size:fill; background-attachment:fixed; min-height:100vh">
     
     <header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat:no-repeat; background-size:cover">
         <div class="dib">
@@ -32,7 +32,7 @@
         {% endblock %}
     </header>
     
-    <main class="center avenir" style="flex:1;">
+    <main class="center avenir" style="flex:1; min-height:75vh">
         {% block content %}
         <!-- page specific content here -->
         {% endblock %}
