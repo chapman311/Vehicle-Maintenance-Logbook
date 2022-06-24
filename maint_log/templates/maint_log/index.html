@@ -178,7 +178,8 @@
 
         <button for="show-page-top" class="b f6 link br1 ph3 pv2 mb2 db white bg-near-black pointer tc center" @click="togglePageTop">Show/Hide 'VIN Decoder' & 'Add Vehicle'</button>
         
-        <h2 class="f3-ns b pt3 ttu tc" for="vehicle-select">Garage</h2>
+        <h2 class="f3-ns b pt3 ttu tc mb0" for="vehicle-select">Garage</h2>
+        <p class="f6 tc mt0">(Click vehicle to view/add maintenance logs.)</p>
         <main class="flex flex-wrap justify-center mw7 near-black">
             <figure
                 v-for="v in vehicles"
@@ -202,7 +203,7 @@
 
         <br>
 
-        <div v-if="vehicle && showingAddMaintenanceLog">
+        <div v-if="vehicle && showingAddMaintenanceLog" class="ph4">
             <label class="i" for="Add Maintenance Log">Enter maintenance log information below:</label>
             <form class="pt1" @submit.prevent="addMaintenanceLog()">
                 <label for="new-maintenance" class="b">Service </label>
