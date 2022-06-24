@@ -1,4 +1,7 @@
+
 {% extends 'maint_log/core.html' %}
+
+{% load static %}
 
 {% block title %}
 	<title>Vehicle Maintenance Logbook</title>
@@ -240,20 +243,20 @@
                     <tbody class="lh-copy measure">
                         <template v-for="maintenanceLog in maintenanceLogs">
                             <tr v-if="maintenanceLog.editing === false" class="stripe-dark">
-                                <td class="ph2">[[ maintenanceLog.name ]]</td>
-                                <td class="ph2 tc">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
-                                <td class="ph2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
-                                <td class="ph2">[[ maintenanceLog.notes ]]</td>
-                                <td class="ph2"><button v-if="!editingIsHappening" class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true; editingIsHappening=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
-                                <td class="ph2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i title="Delete" class="fa-solid fa-trash-can"></i></button></td>    
+                                <td class="ph2 h2">[[ maintenanceLog.name ]]</td>
+                                <td class="ph2 h2 tc">[[ new Date(maintenanceLog.date.replace(/-/g, '\/')).toLocaleDateString() ]]</td>
+                                <td class="ph2 h2 tc">[[ maintenanceLog.mileage.toLocaleString() ]]</td>
+                                <td class="ph2 h2">[[ maintenanceLog.notes ]]</td>
+                                <td class="pr1 h2"><button v-if="!editingIsHappening" class="link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=true; editingIsHappening=true"><i title="Edit" class="fa-solid fa-pen-to-square"></i></button></td>    
+                                <td class="pr2 h2"><button v-if="!editingIsHappening" class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="checkDeleteLog(maintenanceLog.id)"><i title="Delete" class="fa-solid fa-trash-can"></i></button></td>    
                             </tr>
                             <tr v-else class="stripe-dark">
-                                <td class="ph2"><input v-model="maintenanceLog.name" type="text" autocomplete="off"></td>
-                                <td class="ph2 tc"><input v-model="maintenanceLog.date" type="date" autocomplete="off"></td>
-                                <td class="ph2 tc"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
-                                <td class="ph2"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
-                                <td class="ph2"><button class="green link br2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
-                                <td class="ph2"><button class="red link br2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
+                                <td class="ph2 h2"><input v-model="maintenanceLog.name" type="text" autocomplete="off"></td>
+                                <td class="ph2 h2 tc"><input v-model="maintenanceLog.date" type="date" autocomplete="off"></td>
+                                <td class="ph2 h2 tc"><input v-model="maintenanceLog.mileage" type="number" id="new-maintenance" min="0" max="1000000" autocomplete="off"></td>
+                                <td class="ph2 h2"><input v-model="maintenanceLog.notes" type="text" autocomplete="off"></td>
+                                <td class="pr1 h2"><button class="green link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="editMaintenanceLog(maintenanceLog)"><i title="Accept Changes" class="fa-solid fa-check"></i></button></td>    
+                                <td class="pr2 h2"><button class="red link br2 ph2 pv1 mv2 db white bg-near-black pointer tc center" @click="maintenanceLog.editing=false; getMaintenanceLogs(this.vehicle)"><i title="Cancel Changes" class="fa-solid fa-x"></i></button></td>    
                             </tr>
                         </template>
                     </tbody>
@@ -261,6 +264,14 @@
             </div>
         </div>
     </div>
+    <span class="pt2 pb1 pb2-ns ph1 ph2-m ph3-l mid-gray flex flex-column justify-around">
+        <div class="db h-100 center">
+            <p><a href="https://vpic.nhtsa.dot.gov/" target="_blank" class=""><img src="{% static 'maint_log/images/nhtsa_logo.png' %}" alt="NHTSA Logo" width="175" class="center flex"></a></p>
+        </div>
+        <div class="tc">
+            <a href="https://vpic.nhtsa.dot.gov/" target="_blank" class="tc link f7 mid-gray fw6 tracked">Powered by NHTSA Product Information Catalog, Vehicle Listing (vPIC)</a>
+        </div>
+    </span>
 
 
 

@@ -21,27 +21,31 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'maint_log/images/car_logo.ico' %}"/>
 </head>
 
-<header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat: no-repeat; background-size: cover">
-    <h1 class="tc blue bg-black-50" style="color:rgb(133, 214, 255)">Vehicle Maintenance Logbook</h1>
-    {% block header %}
+<body class="flex flex-column" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size:fill; background-attachment:fixed; min-height:100vh">
+    
+    <header class="tc pv2 pv3-ns ba0 avenir" style="background-image: url({% static 'maint_log/images/greyscale_engine.png' %}); background-repeat: no-repeat; background-size: cover">
+        <h1 class="tc blue bg-black-50" style="color:rgb(133, 214, 255)">Vehicle Maintenance Logbook</h1>
+        {% block header %}
         <!-- page specific header here -->
-    {% endblock %}
-</header>
-
-<body class="bg-black-30 center avenir" style="background-image: url({% static 'maint_log/images/background.jpg' %}); background-repeat: no-repeat; background-size: fill; background-attachment: fixed;">
-    {% block content %}
+        {% endblock %}
+    </header>
+    
+    <main class="center avenir" style="flex:1;">
+        {% block content %}
         <!-- page specific content here -->
-    {% endblock %}
+        {% endblock %}
+    </main>
+    
+    <footer class="w-100 bg-near-black">
+        <div class="h3 flex justify-center">
+            <a href="https://mitchchapman.com/" target="_blank" rel= "noopener" title="Visit My Bio" class="flex white-90 link dim pr4"><img src="{% static 'maint_log/images/logo.png' %}" alt="Logo of rock climber." class="pv2 ph3"><h4 class="white-90 self-center">Mitch Chapman</h4></a>
+            <address><a href="mailto:fixerchapman@gmail.com" title="Email Me" class="flex pv4 ph3 white-90 link dim"><i class="fa-solid fa-envelope fa-2xl"></i></a></address>
+            <a href="https://github.com/chapman311" target="_blank" rel= "noopener" title="Visit My GitHub" class="flex pv4 ph3 white-90 link dim"><i class="fa-brands fa-github fa-2xl"></i></a>
+        </div>
+        <div class="tc">
+            <small class="f7 tc dib white-90 pb1 pb2-ns">2022 <b class="ttu">Mitch Chapman</b>, source code released under the GNU General Public License</small>
+        </div>    
+    </footer>
+    
 </body>
-
-<footer class="pv4 ph3 ph5-m ph6-l mid-gray flex flex-column justify-around">
-    <small class="f6 db tc">© 2022 <b class="ttu">Vehicle Maintenance Logbook</b>, All Rights Reserved</small>
-    <div class="db w-30 center">
-        <p><a href="https://vpic.nhtsa.dot.gov/" target="_blank" class=""><img src="{% static 'maint_log/images/nhtsa_logo.png' %}" alt="NHTSA Logo" width="175" class="center flex"></a></p>
-    </div>
-    <div class="tc">
-        <a href="https://vpic.nhtsa.dot.gov/" target="_blank" class="tc link f7 mid-gray fw6 tracked">Powered by NHTSA Product Information Catalog, Vehicle Listing (vPIC)</a>
-    </div>
-</footer>
-
 </html>
