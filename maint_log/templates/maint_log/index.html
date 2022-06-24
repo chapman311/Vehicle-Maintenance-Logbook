@@ -25,7 +25,7 @@
                 <input class="b f6 link ph3 pv2 mb2 white bw1 br1 bg-near-black pointer" type="submit" value="Search VIN">
             </form>
 
-            <ul class="mh4 br2 ba b--dashed b--near-black bw2 mw7" style="background-color: rgba(255, 65, 54, 0.75);" v-if="output && output.ErrorText[0] !== '0'">
+            <ul class="mh4 br2 ba b--dashed b--near-black bw2 mw7" style="background-color: rgba(255, 65, 54,0.8);" v-if="output && output.ErrorText[0] !== '0'">
                 <h3 class="pa2 pr4">The following error(s) occured:</h3>
                 <li class="mw6 mh3 pb3 bl3 p5" v-for="error in output.ErrorText.split(';')">[[ error ]]</li>
             </ul>

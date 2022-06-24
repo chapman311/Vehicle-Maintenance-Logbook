@@ -10,8 +10,8 @@
 {% block content %}
     <span class="flex justify-around f6 black-80 fw6 ttu tc pa1 pt3 tracked">Sign up --&nbsp;&nbsp;It's free!</span>
     <span class="flex justify-around f6 black-80 fw6 ttu tc pa1 pb3 tracked">(An account is needed to use this app)</span>
-        <main class="pa1 black-80">
-            <form class="measure center" action="{% url 'maint_log:user-signup' %}" method="POST">
+        <div class="pa1 black-80">
+            <form class="measure center ph4" action="{% url 'maint_log:user-signup' %}" method="POST">
                 {% csrf_token %}
                 <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
                     <legend class="f4 fw6 ph0 mh0">Sign Up</legend>
@@ -42,6 +42,6 @@
                     <a href="/user-login/"" class="f6 link dim black">Go back to user log in.</a>
                 </div>
                 <p class="b dark-red">{{ message }}</p>
-                </form>
-        </main> 
+            </form>
+        </div> 
 {% endblock %}
