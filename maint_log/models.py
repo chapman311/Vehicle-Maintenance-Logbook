@@ -1,8 +1,7 @@
-from pyexpat import model
+
 from django.db import models
-from django.forms import DateTimeField
 from django.contrib.auth.models import User
-import datetime
+
 
 default_maintenance_intervals = """Tire Rotation: 5,000 miles
 
